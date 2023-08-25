@@ -1,0 +1,69 @@
+.flex {
+    display: flex;
+    width: 100%;
+}
+
+.flex-row {
+    @extend .flex;
+    flex-direction: row;
+}
+
+.flex-column {
+    @extend .flex;
+    flex-direction: column;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.items-end {
+    align-items: flex-end;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.width-fit {
+    width: fit-content;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+@for $i from 0 through 10 {
+    $value: $i * 0.25em;
+    .p-#{$i} {
+        padding: $value;
+    }
+    .gap-#{$i} {
+        gap: $value;
+    }
+    .pt-#{$i},
+    .pr-#{$i},
+    .pb-#{$i},
+    .pl-#{$i} {
+        padding-top: $value;
+        padding-right: $value;
+        padding-bottom: $value;
+        padding-left: $value;
+    }
+}
