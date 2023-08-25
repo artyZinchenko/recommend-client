@@ -28,7 +28,6 @@ const CreateReview = (props: Props) => {
         productTypes[0]
     );
 
-    console.log(productType);
     const formik = useFormik({
         initialValues: {
             name: '',
