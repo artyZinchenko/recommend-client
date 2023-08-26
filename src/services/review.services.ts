@@ -39,7 +39,6 @@ interface FetchTagsResponse {
 export const fetchTags = async (): Promise<FetchTagsResponse> => {
     try {
         const response = await axios.get(`${apiBaseUrl}/tags`);
-        console.log(response.data.review);
 
         return response.data;
     } catch (err) {

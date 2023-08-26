@@ -58,7 +58,7 @@ interface Review {
     tags: string[];
     likes: number;
     status: ReviewStatus;
-    picture: string;
+    images: string;
     score: number;
     rating: number;
     create_date: string;
@@ -70,11 +70,17 @@ interface NewReview {
     name: string;
     productType: string;
     productTitle: string;
+    images: string[];
     text: string;
     tags: string[];
+    rating: number;
 }
 
 interface Tag {
     id: number;
     tag_name: string;
+}
+
+interface ImageFile extends File {
+    preview: string;
 }

@@ -42,10 +42,12 @@ const AddTags = ({ setTagInput, tagInput }: Props) => {
                     onHideSuggestions={() => setSuggestions([])}
                 >
                     <Textarea
+                        placeholder='#add-tags'
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         block={true}
                         cols={100}
+                        rows={1}
                         style={{ fontSize: '1.3em', resize: 'none' }}
                     />
                 </InlineAutocomplete>

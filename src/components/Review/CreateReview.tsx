@@ -7,6 +7,7 @@ import {
     Grid,
     TextField,
     Button,
+    TextareaAutosize,
 } from '@mui/material';
 import { useState } from 'react';
 import { createReview } from '../../services/review.services';
@@ -15,6 +16,11 @@ import { ProductType, productTypes } from '../../data/productTypes';
 import SelectType from './components/SelectType';
 import AddTags from './components/AddTags';
 import { parseTags } from './utils/parseTags';
+import { Textarea } from '@primer/react';
+import ImageDropzone from './components/ImageDropzone';
+import './Review.scss';
+import { getLinks } from './utils/getLinks';
+import Rating from './components/Rating';
 
 interface Props {}
 
@@ -27,6 +33,8 @@ const CreateReview = (props: Props) => {
     const [productType, setProductType] = useState<ProductType>(
         productTypes[0]
     );
+    const [images, setImages] = useState<ImageFile[]>([]);
+    const [rating, setRating] = useState(1);
 
     const formik = useFormik({
         initialValues: {
@@ -35,19 +43,25 @@ const CreateReview = (props: Props) => {
             productType: 'Book',
             text: '',
             tags: [],
+            images: [],
+            rating: 1,
         },
         validationSchema,
         onSubmit: async (values: NewReview) => {
             if (!productType) return;
             setDisabled(true);
             try {
+                const imageLinks = await getLinks(images);
+                console.log(imageLinks);
                 const response = await createReview(
                     {
                         name: values.name,
+                        images: imageLinks,
                         productTitle: values.productTitle,
                         productType: productType.type,
                         text: values.text,
                         tags: parseTags(tagInput),
+                        rating,
                     },
                     token
                 );
@@ -84,13 +98,6 @@ const CreateReview = (props: Props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        sasdfsdf
-                        <AddTags
-                            tagInput={tagInput}
-                            setTagInput={setTagInput}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
                         <TextField
                             fullWidth
                             id='name'
@@ -122,8 +129,22 @@ const CreateReview = (props: Props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
+                        <Rating rating={rating} setRating={setRating} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ImageDropzone images={images} setImages={setImages} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <AddTags
+                            tagInput={tagInput}
+                            setTagInput={setTagInput}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
                         <TextField
                             fullWidth
+                            multiline
+                            minRows={6}
                             label='Text'
                             type='text'
                             id='text'
