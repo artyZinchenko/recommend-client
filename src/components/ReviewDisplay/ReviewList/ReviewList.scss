@@ -1,0 +1,63 @@
+@import '../../../styles/_utilities.scss';
+$breakpoint-medium: 768px;
+
+.review-summary {
+    @extend .flex;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.reviews-list {
+    @extend .flex-column;
+    max-width: 30em;
+    gap: 1em;
+}
+
+.interact {
+    @extend .flex-row;
+    @extend .items-start;
+    @extend .justify-start;
+    padding: 1em;
+    width: fit-content;
+    @media (max-width: $breakpoint-medium) {
+        padding: 0;
+    }
+}
+
+.summary-text-content {
+    padding-left: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    @media (max-width: $breakpoint-medium) {
+        flex-direction: column;
+    }
+}
+
+.icon-container {
+    width: 10em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.summary-image-container {
+    min-width: 7em;
+    max-width: 10em;
+    max-height: 7em;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.summary-image-container img {
+    display: block;
+    max-width: 100%;
+    max-height: 7em;
+    width: auto;
+    height: auto;
+    border-radius: 0.2rem;
+}

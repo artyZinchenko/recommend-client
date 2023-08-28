@@ -2,7 +2,7 @@ import { ThemeProvider, Textarea } from '@primer/react';
 import { InlineAutocomplete } from '@primer/react/drafts';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { fetchTags } from '../../../services/review.services';
+import { fetchTags } from '../../../services/review.services/fetchTags';
 
 interface Props {
     setTagInput: React.Dispatch<React.SetStateAction<string>>;

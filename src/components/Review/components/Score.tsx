@@ -4,33 +4,28 @@ import Slider from '@mui/material/Slider';
 import { Label } from '@primer/react';
 import { SyntheticEvent, useState } from 'react';
 
-function valuetext(value: number) {
-    return `${value}°C`;
-}
-
 interface Props {
-    setRating: React.Dispatch<React.SetStateAction<number>>;
-    rating: number;
+    setScore: React.Dispatch<React.SetStateAction<number>>;
+    score: number;
 }
 
-const Rating = ({ rating, setRating }: Props) => {
+const Score = ({ score, setScore }: Props) => {
     const handleSliderChange = (
         event: Event | SyntheticEvent<Element, Event>,
         newValue: number | number[]
     ) => {
         if (Array.isArray(newValue)) return;
 
-        setRating(newValue);
+        setScore(newValue);
     };
 
     return (
         <Box className='flex items-center'>
             <Typography>Rate product</Typography>
             <Slider
-                aria-label='Rating'
-                value={rating}
+                aria-label='Score'
+                value={score}
                 onChange={handleSliderChange}
-                getAriaValueText={valuetext}
                 valueLabelDisplay='auto'
                 step={1}
                 min={1}
@@ -40,4 +35,4 @@ const Rating = ({ rating, setRating }: Props) => {
     );
 };
 
-export default Rating;
+export default Score;

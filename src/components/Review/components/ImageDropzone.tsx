@@ -17,6 +17,9 @@ import '../Review.scss';
 interface Props {
     setImages: React.Dispatch<React.SetStateAction<ImageFile[]>>;
     images: ImageFile[];
+    imagesEdit: string[];
+    setImagesEdit: React.Dispatch<React.SetStateAction<string[]>>;
+    reviewImages: string[] | undefined;
 }
 
 interface RejecedFile {
@@ -24,8 +27,15 @@ interface RejecedFile {
     errors: FileError[];
 }
 
-const ImageDropzone = ({ images, setImages }: Props) => {
+const ImageDropzone = ({
+    images,
+    setImages,
+    imagesEdit,
+    setImagesEdit,
+    reviewImages,
+}: Props) => {
     const [rejected, setRejected] = useState<RejecedFile[]>([]);
+    const [cancelDeleteButton, setCancelDeleteButton] = useState(false);
 
     const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
         if (acceptedFiles?.length) {
@@ -71,6 +81,20 @@ const ImageDropzone = ({ images, setImages }: Props) => {
         );
     };
 
+    const removeExistingImage = (existingImage: string) => {
+        setCancelDeleteButton(true);
+        setImagesEdit(
+            imagesEdit.filter((image) => {
+                return image !== existingImage;
+            })
+        );
+    };
+
+    const revertChanges = () => {
+        if (reviewImages) setImagesEdit(reviewImages);
+        setCancelDeleteButton(false);
+    };
+
     return (
         <Box className='dropzone'>
             <Paper
@@ -90,7 +114,7 @@ const ImageDropzone = ({ images, setImages }: Props) => {
                     </Typography>
                 )}
             </Paper>
-            {images.length > 0 && (
+            {(images.length > 0 || imagesEdit.length > 0) && (
                 <div className='uploaded-container'>
                     <div className='flex justify-center pt-1'>
                         <Typography variant='h6'>Uploaded Images</Typography>
@@ -105,6 +129,35 @@ const ImageDropzone = ({ images, setImages }: Props) => {
                                 overflow: 'visible',
                             }}
                         >
+                            {imagesEdit.map((image) => {
+                                return (
+                                    <ImageListItem
+                                        key={image}
+                                        className='image-box'
+                                    >
+                                        <img
+                                            src={image}
+                                            alt='existing'
+                                            loading='lazy'
+                                        />
+                                        <CancelRoundedIcon
+                                            sx={{ color: '#F533A4' }}
+                                            className='delete-image'
+                                            onClick={() =>
+                                                removeExistingImage(image)
+                                            }
+                                        />
+                                        <Typography variant='subtitle2'>
+                                            Existing image
+                                        </Typography>
+                                    </ImageListItem>
+                                );
+                            })}
+                            {cancelDeleteButton && (
+                                <Button onClick={revertChanges} color='info'>
+                                    Revert changes
+                                </Button>
+                            )}
                             {images.map((item) => {
                                 return (
                                     <ImageListItem

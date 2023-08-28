@@ -1,9 +1,11 @@
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../Registration/AuthContext';
 
 interface Props {}
 const UserMenu = (props: Props) => {
+    const { user } = useAuthContext();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 
@@ -32,7 +34,13 @@ const UserMenu = (props: Props) => {
                 }}
             >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem
+                    onClick={() =>
+                        navigate(`/account/${user?.id_user}/user-reviews`)
+                    }
+                >
+                    My reviews
+                </MenuItem>
                 <MenuItem onClick={() => navigate('/reviews/create')}>
                     Create review
                 </MenuItem>

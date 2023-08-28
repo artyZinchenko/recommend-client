@@ -1,10 +1,10 @@
 import axios, { AxiosError } from 'axios';
-import config from '../config';
+import config from '../../config';
 
 const apiBaseUrl = config.apiBaseUrl + '/reviews';
 
 interface CreateReviewResponse {
-    review: Review;
+    review: ReviewDB;
     message: string;
 }
 
@@ -20,25 +20,6 @@ export const createReview = async (
             },
         });
         console.log(response.data.review);
-
-        return response.data;
-    } catch (err) {
-        console.log(err);
-        let message = 'Error ';
-        if (err instanceof AxiosError) {
-            message += err.response?.data.message;
-        }
-        throw new Error(message);
-    }
-};
-
-interface FetchTagsResponse {
-    tags: Tag[];
-}
-
-export const fetchTags = async (): Promise<FetchTagsResponse> => {
-    try {
-        const response = await axios.get(`${apiBaseUrl}/tags`);
 
         return response.data;
     } catch (err) {

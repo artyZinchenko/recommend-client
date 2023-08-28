@@ -9,8 +9,10 @@ import SignIn from './components/Registration/SignIn/Form';
 import { AuthContextProvider } from './components/Registration/AuthContext';
 import RootSignIn from './components/Registration/SignIn/RootSignIn';
 import RootCreateAcc from './components/Registration/CreateAccount/RootCreateAcc';
-import CreateReview from './components/Review/CreateReview';
+import CreateReview from './components/Review/ReviewForm';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AccountPage from './components/Account/AccountPage';
+import ReviewList from './components/ReviewDisplay/ReviewList/ReviewList';
 
 function App() {
     const queryClient = new QueryClient();
@@ -43,6 +45,10 @@ function App() {
                                 <Route
                                     path='/reviews/create'
                                     element={<CreateReview />}
+                                />
+                                <Route
+                                    path='account/:userId/*'
+                                    element={<AccountPage />}
                                 />
                             </Routes>
                         </Container>

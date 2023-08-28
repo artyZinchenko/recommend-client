@@ -66,6 +66,20 @@ interface Review {
     comments: Comment[];
 }
 
+interface ReviewDB {
+    review_id: string;
+    name: string;
+    text: string;
+    product: string;
+    type: string;
+    status: string;
+    images: string[];
+    score: number;
+    create_date: string;
+    authorId: string;
+    tags: TagObject[];
+}
+
 interface NewReview {
     name: string;
     productType: string;
@@ -73,12 +87,20 @@ interface NewReview {
     images: string[];
     text: string;
     tags: string[];
-    rating: number;
+    score: number;
+}
+
+interface UpdateReview extends NewReview {
+    review_id: string;
+    authorId: string;
 }
 
 interface Tag {
-    id: number;
+    tag_id: number;
     tag_name: string;
+}
+interface TagObject {
+    tag: Tag;
 }
 
 interface ImageFile extends File {
