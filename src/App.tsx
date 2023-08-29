@@ -29,7 +29,7 @@ function App() {
                                     path='*'
                                     element={<Navigate to='/home' replace />}
                                 />
-                                <Route path='/home' element={<Home />} />
+                                <Route path='/home/*' element={<Home />} />
                                 <Route
                                     path='/registration/*'
                                     element={<Registration />}

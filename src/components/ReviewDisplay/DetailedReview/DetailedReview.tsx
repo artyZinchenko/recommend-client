@@ -2,41 +2,38 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../../Registration/AuthContext';
 import './DetailedReview.scss';
-import ImagesCarousel from './ImagesCarousel';
-import { TYPOGRAPHY } from '@primer/react/lib/constants';
+import ImagesCarousel from './ImagesDisplay';
 import { Button, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
+import { useCacheReviews } from '../../../hooks/useCacheReviews';
+import CommentSection from './CommentSection/CommentSection';
 
 interface Props {}
 
 const DetailedReview = (props: Props) => {
-    const { reviewId } = useParams();
+    const params = useParams();
     const { user } = useAuthContext();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const data: ReviewDB[] | undefined = queryClient.getQueryData([
-        user?.id_user,
-        'reviews',
-    ]);
-    if (!data) return null;
-    const review = data.find((review: ReviewDB) => {
-        return review.review_id === reviewId;
-    });
+    const review = useCacheReviews(params, queryClient, user);
     if (!review) return null;
 
-    console.log(review.tags);
     return (
         <div className='detailed-review'>
             <div className='flex-row justify-between'>
                 <Typography variant='h6'>{review.name}</Typography>
-                <Button
-                    onClick={() => {
-                        navigate('edit');
-                    }}
-                >
-                    Edit
-                </Button>
+                {review.editable && (
+                    <Button
+                        onClick={() => {
+                            navigate(
+                                `/account/${user?.id_user}/user-review/${review.review_id}`
+                            );
+                        }}
+                    >
+                        Edit
+                    </Button>
+                )}
             </div>
             <Typography variant='overline'>{review.product}</Typography>
             <Typography>Score: {review.score}/10</Typography>
@@ -51,6 +48,7 @@ const DetailedReview = (props: Props) => {
                 })}
             </div>
             <ReactMarkdown children={review.text} />
+            <CommentSection user={user} params={params} />
         </div>
     );
 };

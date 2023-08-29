@@ -3,7 +3,7 @@ import './ReviewList.scss';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../../Registration/AuthContext';
 
 interface Props {
@@ -13,16 +13,23 @@ interface Props {
 const ReviewSummary = ({ review }: Props) => {
     const navigate = useNavigate();
     const { user } = useAuthContext();
+    const params = useParams();
+
+    const handleClick = () => {
+        if (params.userId) {
+            navigate(
+                `/account/${user?.id_user}/user-review/${review.review_id}`
+            );
+        } else {
+            navigate(`review/${review.review_id}`);
+        }
+    };
 
     return (
         <Paper
             variant='outlined'
             className='review-summary'
-            onClick={() =>
-                navigate(
-                    `/account/${user?.id_user}/user-review/${review.review_id}`
-                )
-            }
+            onClick={handleClick}
         >
             {review.images?.length > 0 ? (
                 <div className='summary-image-container'>

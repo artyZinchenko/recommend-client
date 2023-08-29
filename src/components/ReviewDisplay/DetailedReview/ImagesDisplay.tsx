@@ -21,6 +21,7 @@ const ImagesDisplay = ({ images }: Props) => {
                         <div
                             onClick={handleOpen}
                             className='flex-column items-center'
+                            key={image}
                         >
                             <div className='preview-image-container pointer'>
                                 <img src={image} alt={image} />

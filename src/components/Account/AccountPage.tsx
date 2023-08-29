@@ -5,6 +5,7 @@ import DetailedReview from '../ReviewDisplay/DetailedReview/DetailedReview';
 import { Typography } from '@mui/material';
 import CreateReview from '../Review/ReviewForm';
 import EditReview from './EditReview';
+import UserReviews from './UserReviews';
 
 interface Props {}
 const AccountPage = (props: Props) => {
@@ -16,7 +17,7 @@ const AccountPage = (props: Props) => {
             <Routes>
                 <Route
                     path='user-reviews'
-                    element={<ReviewList requestedId={userId} />}
+                    element={<UserReviews requestedId={userId} />}
                 />
                 <Route
                     path='user-review/:reviewId'

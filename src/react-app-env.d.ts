@@ -29,6 +29,12 @@ interface User {
     password: string;
     user_status: UserStatus;
     user_name: string;
+    role: Role;
+}
+
+enum Role {
+    USER = 'USER',
+    ADMIN = 'ADMIN',
 }
 
 enum ReviewStatus {
@@ -43,11 +49,17 @@ interface AnotherUser {
     user_name: string;
 }
 
-interface Comment {
-    comment_id: string;
-    text: string;
-    date: string;
-    user: AnotherUser;
+interface Author {
+    user_name: string;
+}
+
+interface CommentDB {
+    author: Author;
+    comment_id: number;
+    comment_text: string;
+    create_date: string;
+    reviewId: string;
+    authorId: string;
 }
 
 interface Review {
@@ -78,6 +90,7 @@ interface ReviewDB {
     create_date: string;
     authorId: string;
     tags: TagObject[];
+    editable?: boolean;
 }
 
 interface NewReview {
