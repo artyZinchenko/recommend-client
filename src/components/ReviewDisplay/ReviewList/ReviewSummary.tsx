@@ -59,13 +59,6 @@ const ReviewSummary = ({ review }: Props) => {
                         <ThumbUpIcon color='primary' sx={{ fontSize: '1em' }} />
                         <Typography variant='subtitle2'>0</Typography>
                     </div>
-                    <div className='flex-row items-center gap-1'>
-                        <ModeCommentIcon
-                            sx={{ fontSize: '1em' }}
-                            color='primary'
-                        />
-                        <Typography variant='subtitle2'>0</Typography>
-                    </div>
                 </div>
             </div>
         </Paper>

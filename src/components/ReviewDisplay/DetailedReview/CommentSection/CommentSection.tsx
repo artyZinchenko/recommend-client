@@ -8,6 +8,7 @@ import './Comment.scss';
 import CommentsField from './CommentsField';
 import { useEffect, useRef, useState } from 'react';
 import InputComment from './InputComment';
+import { useSocket } from '../../../../context/SocketProvider';
 
 interface Props {
     user: User | null;
@@ -16,18 +17,37 @@ interface Props {
 
 const CommentSection = ({ user, params }: Props) => {
     const { token } = useAuthContext();
+    const { socket } = useSocket();
     const [inputText, setInputText] = useState('');
     const [disabled, setDisabled] = useState(false);
     const [shouldScrollDown, setShoulScrollDown] = useState(false);
     const queryClient = useQueryClient();
     const messageEnd = useRef<HTMLDivElement | null>(null);
 
+    useEffect(() => {
+        socket?.emit('joinReview', params.reviewId);
+        socket?.on('commentAdded', (newComment) => {
+            queryClient.setQueryData(
+                [params.reviewId, 'comments'],
+                (oldComments: CommentDB[] | undefined) => {
+                    if (!oldComments) return [newComment];
+                    return [...oldComments, newComment];
+                }
+            );
+            setShoulScrollDown(true);
+        });
+
+        return () => {
+            socket?.off('commentAdded');
+            socket?.emit('leaveReview', params.reviewId);
+        };
+    }, []);
+
     const { isLoading, isError, data, error } = useQuery({
         queryKey: [params.reviewId, 'comments'],
         queryFn: async () => {
             if (!params.reviewId) throw new Error('No reviewId');
             const data = await fetchComments(params.reviewId);
-            console.log('datacomments', data.comments);
             return data.comments;
         },
         staleTime: 5 * 60 * 1000,
@@ -41,17 +61,6 @@ const CommentSection = ({ user, params }: Props) => {
                 params.reviewId
             );
             return data.comment;
-        },
-        onSuccess: (newComment) => {
-            queryClient.setQueryData(
-                [params.reviewId, 'comments'],
-                (oldComments: CommentDB[] | undefined) => {
-                    console.log('MUTATIONS');
-                    if (!oldComments) return [newComment];
-                    return [...oldComments, newComment];
-                }
-            );
-            setShoulScrollDown(true);
         },
     });
 
@@ -77,7 +86,9 @@ const CommentSection = ({ user, params }: Props) => {
 
     return (
         <Paper className='comment-area gap-3' variant='elevation'>
-            <CommentsField data={data} messageEnd={messageEnd} />
+            {data.length > 0 && (
+                <CommentsField data={data} messageEnd={messageEnd} />
+            )}
             {token && (
                 <InputComment
                     inputText={inputText}

@@ -12,49 +12,55 @@ import RootCreateAcc from './components/Registration/CreateAccount/RootCreateAcc
 import CreateReview from './components/Review/ReviewForm';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AccountPage from './components/Account/AccountPage';
-import ReviewList from './components/ReviewDisplay/ReviewList/ReviewList';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { SocketProvider } from './context/SocketProvider';
 
 function App() {
     const queryClient = new QueryClient();
 
     return (
         <div className='App'>
-            <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                    <AuthContextProvider>
-                        <AppBar />
-                        <Container>
-                            <Routes>
-                                <Route
-                                    path='*'
-                                    element={<Navigate to='/home' replace />}
-                                />
-                                <Route path='/home/*' element={<Home />} />
-                                <Route
-                                    path='/registration/*'
-                                    element={<Registration />}
-                                />
-                                <Route
-                                    path='/registration/create-account'
-                                    element={<RootCreateAcc />}
-                                />
-                                <Route
-                                    path='/registration/sign-in'
-                                    element={<RootSignIn />}
-                                />
-                                <Route
-                                    path='/reviews/create'
-                                    element={<CreateReview />}
-                                />
-                                <Route
-                                    path='account/:userId/*'
-                                    element={<AccountPage />}
-                                />
-                            </Routes>
-                        </Container>
-                    </AuthContextProvider>
-                </BrowserRouter>
-            </QueryClientProvider>
+            <SocketProvider>
+                <QueryClientProvider client={queryClient}>
+                    <BrowserRouter>
+                        <AuthContextProvider>
+                            <AppBar />
+                            <Container>
+                                <Routes>
+                                    <Route
+                                        path='*'
+                                        element={
+                                            <Navigate to='/home' replace />
+                                        }
+                                    />
+                                    <Route path='/home/*' element={<Home />} />
+                                    <Route
+                                        path='/registration/*'
+                                        element={<Registration />}
+                                    />
+                                    <Route
+                                        path='/registration/create-account'
+                                        element={<RootCreateAcc />}
+                                    />
+                                    <Route
+                                        path='/registration/sign-in'
+                                        element={<RootSignIn />}
+                                    />
+                                    <Route
+                                        path='/reviews/create'
+                                        element={<CreateReview />}
+                                    />
+                                    <Route
+                                        path='account/:userId/*'
+                                        element={<AccountPage />}
+                                    />
+                                </Routes>
+                            </Container>
+                        </AuthContextProvider>
+                    </BrowserRouter>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+            </SocketProvider>
         </div>
     );
 }

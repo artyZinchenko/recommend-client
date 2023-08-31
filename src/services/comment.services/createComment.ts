@@ -24,7 +24,6 @@ export const createComment = async (
                 },
             }
         );
-        console.log(response.data.comment);
 
         return response.data;
     } catch (err) {
