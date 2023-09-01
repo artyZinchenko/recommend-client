@@ -14,13 +14,16 @@ $breakpoint-medium: 768px;
 }
 
 .interact {
-    @extend .flex-row;
-    @extend .items-start;
-    @extend .justify-start;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
     padding: 1em;
     width: fit-content;
     @media (max-width: $breakpoint-medium) {
         padding: 0;
+        align-items: flex-start;
     }
 }
 

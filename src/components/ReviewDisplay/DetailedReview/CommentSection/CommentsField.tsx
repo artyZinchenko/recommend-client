@@ -11,7 +11,11 @@ const CommentsField = ({ data, messageEnd }: Props) => {
         <Paper variant='outlined' className='comment-field'>
             {data.map((comment) => {
                 return (
-                    <Paper variant='outlined' className='comment'>
+                    <Paper
+                        variant='outlined'
+                        className='comment'
+                        key={comment.comment_id}
+                    >
                         <Typography variant='body2' color='primary'>
                             {comment.author.user_name}
                         </Typography>

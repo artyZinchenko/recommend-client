@@ -62,6 +62,17 @@ interface CommentDB {
     authorId: string;
 }
 
+interface RateDB {
+    reviewId: string;
+    userId: string;
+    rate_number: number;
+}
+
+interface LikeDB {
+    reviewId: string;
+    userId: string;
+}
+
 interface Review {
     id: string;
     name: string;
@@ -91,6 +102,9 @@ interface ReviewDB {
     authorId: string;
     tags: TagObject[];
     editable?: boolean;
+    likes: LikeDB[];
+    ratings: RateDB[];
+    average_rating: number;
 }
 
 interface NewReview {

@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material';
+import { Paper, Rating, Typography } from '@mui/material';
 import './ReviewList.scss';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -44,20 +44,26 @@ const ReviewSummary = ({ review }: Props) => {
                 <div className='flex-column'>
                     <Typography variant='overline'>{review.product}</Typography>
                     <Typography variant='h6'>{review.name}</Typography>
-                    <Typography
-                        variant='body2'
-                        className='flex-row justify-start gap-2 items-center'
-                    >
-                        Rating:{' '}
+                    <div className='flex-row justify-start gap-2 items-center'>
+                        <Typography variant='body2'>Rating: </Typography>
                         <Typography variant='subtitle1'>
                             {review.score}/10
                         </Typography>
-                    </Typography>
+                    </div>
                 </div>
                 <div className='interact gap-1'>
-                    <div className='flex-row items-center gap-1'>
+                    <Rating
+                        name='read-only'
+                        value={review.average_rating}
+                        precision={0.5}
+                        readOnly
+                        size='small'
+                    />
+                    <div className='flex-row items-center gap-1 width-fit'>
                         <ThumbUpIcon color='primary' sx={{ fontSize: '1em' }} />
-                        <Typography variant='subtitle2'>0</Typography>
+                        <Typography variant='subtitle2'>
+                            {review.likes.length}
+                        </Typography>
                     </div>
                 </div>
             </div>

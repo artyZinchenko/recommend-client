@@ -14,7 +14,9 @@ const Registration = (props: Props) => {
     return (
         <Paper variant='elevation' square className='flex justify-center'>
             <div className='flex-column p-4 justify-start items-center width-fit'>
-                <Button>Sign in</Button>
+                <Link to='/registration/sign-in'>
+                    <Button>Sign in</Button>
+                </Link>
                 <Button>Sign in with Facebook</Button>
                 <Button>Sign in with Twitter</Button>
                 <div className='flex-row gap-2 items-center pt-2 pb-2'>
