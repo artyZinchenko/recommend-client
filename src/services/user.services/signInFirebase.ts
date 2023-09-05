@@ -11,12 +11,15 @@ export interface LoginResponse {
 
 export const signInFirebase = async (
     uid: string,
-    token: string
+    token: string,
+    emailForTwitter: string | null
 ): Promise<LoginResponse> => {
     try {
+        console.log(emailForTwitter);
         const response = await axios.post(`${apiBaseUrl}/signin-firebase`, {
             uid,
             token,
+            emailForTwitter,
         });
 
         return response.data;

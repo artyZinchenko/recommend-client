@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material';
-import SignIn from './Form';
+import Form from './Form';
 import { useState } from 'react';
 
 interface Props {}
@@ -16,7 +16,7 @@ const RootSignIn = (props: Props) => {
                     <Button>To my profile</Button>
                 </div>
             ) : (
-                <SignIn
+                <Form
                     setSuccess={setSuccess}
                     setNotification={setNotification}
                 />
