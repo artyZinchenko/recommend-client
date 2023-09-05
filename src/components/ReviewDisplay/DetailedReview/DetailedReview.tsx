@@ -1,11 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuthContext } from '../../Registration/AuthContext';
+import { useAuthContext } from '../../../context/AuthContext';
 import './DetailedReview.scss';
 import ImagesCarousel from './ImagesDisplay';
 import { Button, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
-import { useCacheReviews } from '../../../hooks/useCacheReviews';
+import { useSearchReviewCache } from '../../../hooks/useSearchReviewCache';
 import CommentSection from './CommentSection/CommentSection';
 import Like from './Feedback/Like';
 import Feedback from './Feedback/Feedback';
@@ -18,7 +18,7 @@ const DetailedReview = (props: Props) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const review = useCacheReviews(params, queryClient, user);
+    const review = useSearchReviewCache(params, queryClient, user);
     if (!review) return null;
 
     return (
@@ -29,7 +29,7 @@ const DetailedReview = (props: Props) => {
                     <Button
                         onClick={() => {
                             navigate(
-                                `/account/${user?.id_user}/user-review/${review.review_id}`
+                                `/account/${user?.id_user}/user-review/${review.review_id}/edit`
                             );
                         }}
                     >

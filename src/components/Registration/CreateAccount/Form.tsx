@@ -9,8 +9,8 @@ import Container from '@mui/material/Container';
 import { validationSchema } from '../validationSchema';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { createAccount } from '../../../services/user.services';
 import Link from '../../custom/Link';
+import { createAccount } from '../../../services/user.services/createAccount';
 
 interface Props {
     setNotification: React.Dispatch<React.SetStateAction<string>>;

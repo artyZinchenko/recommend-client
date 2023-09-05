@@ -1,5 +1,5 @@
 import { useUserReviews } from '../../hooks/useUserReviews';
-import { useAuthContext } from '../Registration/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import ReviewList from '../ReviewDisplay/ReviewList/ReviewList';
 
 interface Props {

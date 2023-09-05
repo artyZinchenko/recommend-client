@@ -25,11 +25,21 @@ enum UserStatus {
 
 interface User {
     id_user: string;
-    email: string;
-    password: string;
+    email: string | null;
+    password: string | null;
     user_status: UserStatus;
     user_name: string;
     role: Role;
+    reviews?: ReviewDB[];
+}
+
+interface ProviderData {
+    token: string;
+    displayName: string | null;
+    email: string | null;
+    photoURL: string | null;
+    providerId: string | null;
+    uid: string | null;
 }
 
 enum Role {

@@ -6,7 +6,7 @@ import { Container } from '@mui/material';
 import './styles/main.scss';
 import Page from './components/Registration/CreateAccount/RootCreateAcc';
 import SignIn from './components/Registration/SignIn/Form';
-import { AuthContextProvider } from './components/Registration/AuthContext';
+import { AuthContextProvider, useAuthContext } from './context/AuthContext';
 import RootSignIn from './components/Registration/SignIn/RootSignIn';
 import RootCreateAcc from './components/Registration/CreateAccount/RootCreateAcc';
 import CreateReview from './components/Review/ReviewForm';
@@ -14,6 +14,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AccountPage from './components/Account/AccountPage';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SocketProvider } from './context/SocketProvider';
+import AdminProtected from './components/RouteProtection/AdminProtected';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 
 function App() {
     const queryClient = new QueryClient();
@@ -53,6 +55,14 @@ function App() {
                                     <Route
                                         path='account/:userId/*'
                                         element={<AccountPage />}
+                                    />
+                                    <Route
+                                        path='/admin-panel'
+                                        element={
+                                            <AdminProtected>
+                                                <AdminPanel />
+                                            </AdminProtected>
+                                        }
                                     />
                                 </Routes>
                             </Container>

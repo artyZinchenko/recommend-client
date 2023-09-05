@@ -4,7 +4,7 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuthContext } from '../../Registration/AuthContext';
+import { useAuthContext } from '../../../context/AuthContext';
 
 interface Props {
     review: ReviewDB;

@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Params } from 'react-router-dom';
 import { fetchComments } from '../../../../services/comment.services/fetchComments';
 import { Button, Paper } from '@mui/material';
-import { useAuthContext } from '../../../Registration/AuthContext';
+import { useAuthContext } from '../../../../context/AuthContext';
 import { createComment } from '../../../../services/comment.services/createComment';
 import './Comment.scss';
 import CommentsField from './CommentsField';

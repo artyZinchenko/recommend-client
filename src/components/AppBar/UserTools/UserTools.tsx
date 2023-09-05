@@ -1,6 +1,6 @@
 import { Avatar, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../Registration/AuthContext';
+import { useAuthContext } from '../../../context/AuthContext';
 import UserMenu from './UserMenu';
 
 interface Props {}

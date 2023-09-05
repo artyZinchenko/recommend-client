@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { createReview } from '../../services/review.services/createReview';
-import { useAuthContext } from '../Registration/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import { ProductType, productTypes } from '../../data/productTypes';
 import SelectType from './components/SelectType';
 import AddTags from './components/AddTags';
@@ -21,12 +21,14 @@ import Score from './components/Score';
 import { updateReview } from '../../services/review.services/updateReview';
 import './Review.scss';
 import { tagsToString } from './utils/tagsToString';
+import DeleteDialog from './components/DeleteDialog';
 
 interface Props {
     review?: ReviewDB;
 }
 
 const ReviewForm = ({ review }: Props) => {
+    console.log(review);
     const [disabled, setDisabled] = useState(false);
     const [notification, setNotification] = useState('');
     const [success, setSuccess] = useState(false);
@@ -39,9 +41,10 @@ const ReviewForm = ({ review }: Props) => {
     );
     const [images, setImages] = useState<ImageFile[]>([]);
     const [imagesEdit, setImagesEdit] = useState<string[]>(
-        review ? [...review.images] : []
+        review?.images ? [...review.images] : []
     );
     const [score, setScore] = useState(review?.score || 1);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     const formik = useFormik({
         initialValues: {
@@ -199,7 +202,23 @@ const ReviewForm = ({ review }: Props) => {
                 >
                     {review ? 'Post edited Review' : 'Post Review'}
                 </Button>
+                {review && (
+                    <Button
+                        fullWidth
+                        onClick={() => setDialogOpen(true)}
+                        color='warning'
+                        variant='contained'
+                        sx={{ mb: 2 }}
+                    >
+                        Delete review
+                    </Button>
+                )}
             </Box>
+            <DeleteDialog
+                open={dialogOpen}
+                setOpen={setDialogOpen}
+                reviewId={review?.review_id}
+            />
         </Container>
     );
 };

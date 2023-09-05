@@ -1,5 +1,5 @@
 import { Route, Routes, useParams } from 'react-router-dom';
-import { useAuthContext } from '../Registration/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import ReviewList from '../ReviewDisplay/ReviewList/ReviewList';
 import DetailedReview from '../ReviewDisplay/DetailedReview/DetailedReview';
 import { Typography } from '@mui/material';

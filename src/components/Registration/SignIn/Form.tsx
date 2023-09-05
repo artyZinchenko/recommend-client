@@ -9,8 +9,8 @@ import {
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import Link from '../../custom/Link';
-import { login } from '../../../services/user.services';
-import { useAuthContext } from '../AuthContext';
+import { useAuthContext } from '../../../context/AuthContext';
+import { login } from '../../../services/user.services/login';
 
 interface Props {
     setNotification: React.Dispatch<React.SetStateAction<string>>;
@@ -19,7 +19,7 @@ interface Props {
 
 const Form = ({ setNotification, setSuccess }: Props) => {
     const [disabled, setDisabled] = useState(false);
-    const { setUser, setToken } = useAuthContext();
+    const { setUser, setToken, setUserData } = useAuthContext();
 
     const formik = useFormik({
         initialValues: {
@@ -30,8 +30,7 @@ const Form = ({ setNotification, setSuccess }: Props) => {
             setDisabled(true);
             try {
                 const data = await login(values);
-                setUser(data.user);
-                setToken(data.token);
+                setUserData(data);
                 setSuccess(true);
                 setNotification(data.message);
             } catch (err) {
@@ -109,3 +108,6 @@ const Form = ({ setNotification, setSuccess }: Props) => {
 };
 
 export default Form;
+function signIn(values: SignInData) {
+    throw new Error('Function not implemented.');
+}

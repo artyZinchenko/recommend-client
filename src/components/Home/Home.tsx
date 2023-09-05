@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useReviews } from '../../hooks/useReviews';
 import DetailedReview from '../ReviewDisplay/DetailedReview/DetailedReview';
 import ReviewList from '../ReviewDisplay/ReviewList/ReviewList';
-import { useAuthContext } from '../Registration/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 
 interface Props {}
 
