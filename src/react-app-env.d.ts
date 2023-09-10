@@ -99,6 +99,10 @@ interface Review {
     comments: Comment[];
 }
 
+interface AuthorName {
+    user_name: string;
+}
+
 interface ReviewDB {
     review_id: string;
     name: string;
@@ -115,6 +119,7 @@ interface ReviewDB {
     likes: LikeDB[];
     ratings: RateDB[];
     average_rating: number;
+    author: AuthorName;
 }
 
 interface NewReview {
@@ -135,6 +140,7 @@ interface UpdateReview extends NewReview {
 interface Tag {
     tag_id: number;
     tag_name: string;
+    usage: number;
 }
 interface TagObject {
     tag: Tag;

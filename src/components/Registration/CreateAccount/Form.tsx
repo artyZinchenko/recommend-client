@@ -11,6 +11,7 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import Link from '../../custom/Link';
 import { createAccount } from '../../../services/user.services/createAccount';
+import { useIsLoading } from '../../../context/IsLoadingProvider';
 
 interface Props {
     setNotification: React.Dispatch<React.SetStateAction<string>>;
@@ -19,6 +20,7 @@ interface Props {
 
 const Form = ({ setNotification, setSuccess }: Props) => {
     const [disabled, setDisabled] = useState(false);
+    const { setIsLoading } = useIsLoading();
 
     const formik = useFormik({
         initialValues: {
@@ -30,6 +32,7 @@ const Form = ({ setNotification, setSuccess }: Props) => {
         validationSchema,
         onSubmit: async (values: RegistrationData) => {
             setDisabled(true);
+            setIsLoading(true);
             try {
                 const response = await createAccount({
                     name: values.name,
@@ -46,6 +49,7 @@ const Form = ({ setNotification, setSuccess }: Props) => {
                 setNotification(message);
             } finally {
                 setDisabled(false);
+                setIsLoading(false);
             }
         },
     });

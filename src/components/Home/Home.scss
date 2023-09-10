@@ -1,0 +1,23 @@
+.tag-cloud {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 20em;
+}
+
+.container-cloud {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 17em;
+}
+
+.home-reviews-container {
+    width: 100%;
+    max-width: 30em;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}

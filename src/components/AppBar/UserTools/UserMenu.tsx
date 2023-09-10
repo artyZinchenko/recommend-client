@@ -40,7 +40,7 @@ const UserMenu = (props: Props) => {
                 >
                     My reviews
                 </MenuItem>
-                <MenuItem onClick={() => navigate('/reviews/create')}>
+                <MenuItem onClick={() => navigate('/create-review')}>
                     Create review
                 </MenuItem>
                 <MenuItem

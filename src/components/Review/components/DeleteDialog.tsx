@@ -8,9 +8,10 @@ interface Props {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     reviewId: string | undefined;
+    user: User | null;
 }
 
-const DeleteDialog = ({ open, setOpen, reviewId }: Props) => {
+const DeleteDialog = ({ open, setOpen, reviewId, user }: Props) => {
     const { token } = useAuthContext();
     const [message, setMessage] = useState('');
     const [disabled, setDisabled] = useState(false);
@@ -44,7 +45,7 @@ const DeleteDialog = ({ open, setOpen, reviewId }: Props) => {
                         variant='outlined'
                         onClick={() => {
                             setOpen(false);
-                            navigate('/home');
+                            navigate(`/account/${user?.id_user}/user-reviews`);
                         }}
                     >
                         Ok

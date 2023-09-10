@@ -82,11 +82,11 @@ const CommentSection = ({ user, params }: Props) => {
         }
     };
 
-    if (isError || !data) return null;
+    if (isError) return null;
 
     return (
-        <Paper className='comment-area gap-3' variant='elevation'>
-            {data.length > 0 && (
+        <div className='comment-area gap-3'>
+            {data && data.length > 0 && (
                 <CommentsField data={data} messageEnd={messageEnd} />
             )}
             {token && (
@@ -97,7 +97,7 @@ const CommentSection = ({ user, params }: Props) => {
                     disabled={disabled}
                 />
             )}
-        </Paper>
+        </div>
     );
 };
 

@@ -9,6 +9,7 @@ $breakpoint-medium: 768px;
 
 .reviews-list {
     @extend .flex-column;
+    width: 100%;
     max-width: 30em;
     gap: 1em;
 }

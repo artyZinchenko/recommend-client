@@ -27,6 +27,7 @@ const Like = ({ user, params, token, likes }: Props) => {
     const handleClick = async () => {
         if (blocked || isLiked) return;
         setBlocked(true);
+        setIsLiked(true);
         try {
             const like = await addLike(token, params?.reviewId, user?.id_user);
 
@@ -42,8 +43,6 @@ const Like = ({ user, params, token, likes }: Props) => {
                 }
             );
             queryClient.invalidateQueries([user?.id_user]);
-
-            setIsLiked(true);
         } catch (err) {
             console.log(err);
         } finally {

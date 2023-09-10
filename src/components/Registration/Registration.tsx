@@ -1,19 +1,8 @@
 import { Button, Paper, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import {
-    Link,
-    Route,
-    Routes,
-    useLocation,
-    useNavigate,
-} from 'react-router-dom';
-import CreateAccount from './CreateAccount/Form';
-import { useEffect, useState } from 'react';
-import {
-    getAuth,
     signInWithPopup,
     FacebookAuthProvider,
-    getRedirectResult,
-    signInWithRedirect,
     TwitterAuthProvider,
 } from 'firebase/auth';
 import { auth, fbProvider, twProvider } from '../../firebase-config';
@@ -21,14 +10,20 @@ import { signInFirebase } from '../../services/user.services/signInFirebase';
 import { useAuthContext } from '../../context/AuthContext';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import { useIsLoading } from '../../context/IsLoadingProvider';
 
-interface Props {}
-const Registration = (props: Props) => {
+interface Props {
+    setNotification: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Registration = ({ setNotification }: Props) => {
     const { setUserData } = useAuthContext();
+    const { setIsLoading } = useIsLoading();
 
-    const handleSignIn = async (
+    const firebaseSignIn = async (
         provider: FacebookAuthProvider | TwitterAuthProvider
     ) => {
+        setIsLoading(true);
         try {
             const userObject = await signInWithPopup(auth, provider);
 
@@ -49,9 +44,14 @@ const Registration = (props: Props) => {
                 emailForTwitter
             );
             setUserData(data);
-            console.log(data);
         } catch (err) {
-            console.log(err);
+            let message = 'Error';
+            if (err instanceof Error) {
+                message = err.message;
+            }
+            setNotification(message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -62,7 +62,7 @@ const Registration = (props: Props) => {
                     <Button variant='outlined'>Sign in</Button>
                 </Link>
                 <Button
-                    onClick={() => handleSignIn(fbProvider)}
+                    onClick={() => firebaseSignIn(fbProvider)}
                     variant='outlined'
                 >
                     <FacebookIcon />
@@ -71,7 +71,7 @@ const Registration = (props: Props) => {
                     </Typography>
                 </Button>
                 <Button
-                    onClick={() => handleSignIn(twProvider)}
+                    onClick={() => firebaseSignIn(twProvider)}
                     variant='outlined'
                 >
                     <TwitterIcon />
@@ -91,4 +91,5 @@ const Registration = (props: Props) => {
         </Paper>
     );
 };
+
 export default Registration;

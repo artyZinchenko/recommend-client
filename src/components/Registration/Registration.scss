@@ -1,0 +1,10 @@
+.notification {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    border-radius: 1rem;
+    border: 3px rgb(238, 219, 9) solid;
+    width: fit-content;
+}

@@ -8,7 +8,7 @@ export const useUserReviews = (
     requestedId: string | undefined
 ) => {
     const { isLoading, isError, data, error } = useQuery({
-        queryKey: [user?.id_user, 'reviews'],
+        queryKey: ['reviews', user?.id_user],
         queryFn: async () => {
             if (!requestedId) throw new Error();
             const data = await fetchUserReviews(requestedId, token);

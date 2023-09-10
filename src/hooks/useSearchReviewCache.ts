@@ -9,7 +9,7 @@ export const useSearchReviewCache = (
 ) => {
     const data: [queryKey: QueryKey, data: ReviewDB[] | undefined][] =
         queryClient.getQueriesData({
-            queryKey: [user?.id_user],
+            queryKey: ['reviews'],
         });
     if (!params.reviewId || !data) return null;
 

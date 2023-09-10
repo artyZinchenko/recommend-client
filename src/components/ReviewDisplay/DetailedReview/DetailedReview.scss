@@ -1,4 +1,13 @@
 .detailed-review {
+    max-width: 50em;
+    width: 100%;
+}
+
+.markdown {
+    width: 100%;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .carousel {

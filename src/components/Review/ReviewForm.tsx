@@ -22,20 +22,21 @@ import { updateReview } from '../../services/review.services/updateReview';
 import './Review.scss';
 import { tagsToString } from './utils/tagsToString';
 import DeleteDialog from './components/DeleteDialog';
+import { useIsLoading } from '../../context/IsLoadingProvider';
 
 interface Props {
     review?: ReviewDB;
+    setNotification: React.Dispatch<React.SetStateAction<string>>;
+    setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ReviewForm = ({ review }: Props) => {
-    console.log(review);
+const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
+    const { setIsLoading } = useIsLoading();
     const [disabled, setDisabled] = useState(false);
-    const [notification, setNotification] = useState('');
-    const [success, setSuccess] = useState(false);
     const [tagInput, setTagInput] = useState(
         review ? tagsToString(review.tags) : ''
     );
-    const { token } = useAuthContext();
+    const { token, user } = useAuthContext();
     const [productType, setProductType] = useState<ProductType>(
         productTypes[0]
     );
@@ -58,6 +59,7 @@ const ReviewForm = ({ review }: Props) => {
         },
         validationSchema,
         onSubmit: async (values: NewReview) => {
+            setIsLoading(true);
             setDisabled(true);
             try {
                 const imageLinks = await getLinks(images);
@@ -102,6 +104,7 @@ const ReviewForm = ({ review }: Props) => {
                 }
                 setNotification(message);
             } finally {
+                setIsLoading(false);
                 setDisabled(false);
             }
         },
@@ -218,6 +221,7 @@ const ReviewForm = ({ review }: Props) => {
                 open={dialogOpen}
                 setOpen={setDialogOpen}
                 reviewId={review?.review_id}
+                user={user}
             />
         </Container>
     );

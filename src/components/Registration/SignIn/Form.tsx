@@ -11,15 +11,16 @@ import { useState } from 'react';
 import Link from '../../custom/Link';
 import { useAuthContext } from '../../../context/AuthContext';
 import { login } from '../../../services/user.services/login';
+import { useIsLoading } from '../../../context/IsLoadingProvider';
 
 interface Props {
     setNotification: React.Dispatch<React.SetStateAction<string>>;
-    setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Form = ({ setNotification, setSuccess }: Props) => {
+const Form = ({ setNotification }: Props) => {
     const [disabled, setDisabled] = useState(false);
-    const { setUser, setToken, setUserData } = useAuthContext();
+    const { setUserData } = useAuthContext();
+    const { setIsLoading } = useIsLoading();
 
     const formik = useFormik({
         initialValues: {
@@ -28,19 +29,20 @@ const Form = ({ setNotification, setSuccess }: Props) => {
         },
         onSubmit: async (values: SignInData) => {
             setDisabled(true);
+            setIsLoading(true);
             try {
                 const data = await login(values);
                 setUserData(data);
-                setSuccess(true);
-                setNotification(data.message);
             } catch (err) {
                 let message = 'Error';
                 if (err instanceof Error) {
                     message = err.message;
                 }
+                console.log(message);
                 setNotification(message);
             } finally {
                 setDisabled(false);
+                setIsLoading(false);
             }
         },
     });

@@ -2,25 +2,14 @@ import { Button, Typography } from '@mui/material';
 import Form from './Form';
 import { useState } from 'react';
 
-interface Props {}
-const RootSignIn = (props: Props) => {
-    const [notification, setNotification] = useState('');
-    const [success, setSuccess] = useState(false);
-    //  const navigate = useNavigate();
+interface Props {
+    setNotification: React.Dispatch<React.SetStateAction<string>>;
+}
 
+const RootSignIn = ({ setNotification }: Props) => {
     return (
         <div className='flex-column justify-center items-center'>
-            {notification && <Typography>{notification}</Typography>}
-            {success ? (
-                <div className='flex-column items-center align-center pt-2'>
-                    <Button>To my profile</Button>
-                </div>
-            ) : (
-                <Form
-                    setSuccess={setSuccess}
-                    setNotification={setNotification}
-                />
-            )}
+            <Form setNotification={setNotification} />
         </div>
     );
 };

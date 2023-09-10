@@ -3,24 +3,54 @@ import { useReviews } from '../../hooks/useReviews';
 import DetailedReview from '../ReviewDisplay/DetailedReview/DetailedReview';
 import ReviewList from '../ReviewDisplay/ReviewList/ReviewList';
 import { useAuthContext } from '../../context/AuthContext';
+import TagCloud from './components/TagCloud';
+import { memo, useState } from 'react';
+import BestReviews from './components/BestReviews';
+import LatestReviews from './components/LatestReviews';
+import { Button, Paper, Theme, styled, useTheme } from '@mui/material';
+import './Home.scss';
 
 interface Props {}
 
+interface StyledProps {
+    selected: boolean;
+}
+
+const StyledButton = styled(Button, {
+    shouldForwardProp: (prop) => prop !== 'selected',
+})<StyledProps>(({ theme, selected }) => ({
+    color: selected ? theme.palette.primary.dark : theme.palette.primary.light,
+}));
+
 const Home = (props: Props) => {
+    console.log('home');
     const { user } = useAuthContext();
-    const { isLoading, isError, data, error } = useReviews(user);
-
-    if (isLoading) return <span>Loading...</span>;
-
-    if (!data) return <span>Error</span>;
+    const [bestSelected, setBestSelected] = useState(true);
+    const theme = useTheme();
+    console.log(bestSelected);
 
     return (
-        <div>
-            Home
-            <Routes>
-                <Route path='/' element={<ReviewList data={data} />} />
-                <Route path='review/:reviewId' element={<DetailedReview />} />
-            </Routes>
+        <div className='flex-column gap-2 items-center'>
+            <TagCloud />
+            <div className='home-reviews-container'>
+                <div className='flex-row justify-between'>
+                    <StyledButton
+                        variant='text'
+                        selected={bestSelected ? true : false}
+                        onClick={() => setBestSelected(true)}
+                    >
+                        Best reviews
+                    </StyledButton>
+                    <StyledButton
+                        variant='text'
+                        selected={bestSelected ? false : true}
+                        onClick={() => setBestSelected(false)}
+                    >
+                        Last reviews
+                    </StyledButton>
+                </div>
+                {bestSelected ? <BestReviews /> : <LatestReviews />}
+            </div>
         </div>
     );
 };
