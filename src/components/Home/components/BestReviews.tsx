@@ -4,6 +4,7 @@ import ErrorComponent from '../../Exceptions/ErrorComponent';
 import { useIsLoading } from '../../../context/IsLoadingProvider';
 import ReviewList from '../../ReviewDisplay/ReviewList/ReviewList';
 import { useEffect } from 'react';
+import { useHandleIsLoading } from '../../../hooks/useHandleIsLoading';
 
 interface Props {}
 const BestReviews = (props: Props) => {
@@ -17,20 +18,12 @@ const BestReviews = (props: Props) => {
         },
     });
 
-    useEffect(() => {
-        return () => setIsLoading(false);
-    }, []);
-
-    if (isLoading) {
-        setIsLoading(true);
-    }
+    useHandleIsLoading(setIsLoading, isLoading, isSuccess, isError);
 
     if (isError) {
-        setIsLoading(false);
         return <ErrorComponent error={error} />;
     }
     if (isSuccess) {
-        setIsLoading(false);
         return <ReviewList data={data} />;
     }
 

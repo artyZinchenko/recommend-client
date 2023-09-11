@@ -1,17 +1,24 @@
-import { Avatar, Button } from '@mui/material';
+import { Avatar, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../../context/AuthContext';
-import UserMenu from './UserMenu';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useDrawerContext } from '../../../context/DrawerContext';
 
 interface Props {}
 const UserTools = (props: Props) => {
     const navigate = useNavigate();
     const { user } = useAuthContext();
+    const { setDrawerOpen } = useDrawerContext();
 
     return (
         <div>
             {user ? (
-                <UserMenu />
+                <div className='flex-row items-center gap-3'>
+                    {user && <Typography>{user.user_name}</Typography>}
+                    <div onClick={() => setDrawerOpen(true)}>
+                        <MenuIcon className='pointer' />
+                    </div>
+                </div>
             ) : (
                 <Button
                     color='inherit'

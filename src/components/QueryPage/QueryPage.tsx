@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Typography } from '@mui/material';
 import ReviewList from '../ReviewDisplay/ReviewList/ReviewList';
 import { useAuthContext } from '../../context/AuthContext';
+import { useHandleIsLoading } from '../../hooks/useHandleIsLoading';
 
 interface Props {}
 
@@ -25,12 +26,9 @@ const QueryPage = (props: Props) => {
         user
     );
 
-    if (isLoading) {
-        setIsLoading(true);
-    }
+    useHandleIsLoading(setIsLoading, isLoading, isSuccess, isError);
 
     if (isError) {
-        setIsLoading(false);
         return (
             <div>
                 <Typography>Something went wrong</Typography>
@@ -42,7 +40,6 @@ const QueryPage = (props: Props) => {
     }
 
     if (isSuccess) {
-        setIsLoading(false);
         if (!data) return <Typography>Something went wrong</Typography>;
         if (data.length === 0)
             return <Typography>No reviews match your search...</Typography>;

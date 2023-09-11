@@ -9,6 +9,7 @@ import BestReviews from './components/BestReviews';
 import LatestReviews from './components/LatestReviews';
 import { Button, Paper, Theme, styled, useTheme } from '@mui/material';
 import './Home.scss';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface Props {}
 
@@ -23,11 +24,9 @@ const StyledButton = styled(Button, {
 }));
 
 const Home = (props: Props) => {
-    console.log('home');
-    const { user } = useAuthContext();
     const [bestSelected, setBestSelected] = useState(true);
     const theme = useTheme();
-    console.log(bestSelected);
+    const { t } = useTranslation();
 
     return (
         <div className='flex-column gap-2 items-center'>
@@ -39,7 +38,7 @@ const Home = (props: Props) => {
                         selected={bestSelected ? true : false}
                         onClick={() => setBestSelected(true)}
                     >
-                        Best reviews
+                        {t('home.best')}
                     </StyledButton>
                     <StyledButton
                         variant='text'

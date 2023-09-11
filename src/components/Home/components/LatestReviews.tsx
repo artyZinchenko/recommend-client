@@ -5,10 +5,10 @@ import { useIsLoading } from '../../../context/IsLoadingProvider';
 import { useEffect } from 'react';
 import ErrorComponent from '../../Exceptions/ErrorComponent';
 import ReviewList from '../../ReviewDisplay/ReviewList/ReviewList';
+import { useHandleIsLoading } from '../../../hooks/useHandleIsLoading';
 
 interface Props {}
 const LatestReviews = (props: Props) => {
-    console.log('latest');
     const { setIsLoading } = useIsLoading();
     const { data, isLoading, isError, error, isSuccess } = useQuery({
         queryKey: ['reviews', 'latest-reviews'],
@@ -18,20 +18,12 @@ const LatestReviews = (props: Props) => {
         },
     });
 
-    useEffect(() => {
-        return () => setIsLoading(false);
-    }, []);
-
-    if (isLoading) {
-        setIsLoading(true);
-    }
+    useHandleIsLoading(setIsLoading, isLoading, isSuccess, isError);
 
     if (isError) {
-        setIsLoading(false);
         return <ErrorComponent error={error} />;
     }
     if (isSuccess) {
-        setIsLoading(false);
         return <ReviewList data={data} />;
     }
 
