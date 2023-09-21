@@ -3,6 +3,7 @@ import { useAuthContext } from '../../../context/AuthContext';
 import { deleteReview } from '../../../services/review.services/deleteReview';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     open: boolean;
@@ -16,6 +17,7 @@ const DeleteDialog = ({ open, setOpen, reviewId, user }: Props) => {
     const [message, setMessage] = useState('');
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     useEffect(() => {
         setMessage('');
@@ -40,7 +42,7 @@ const DeleteDialog = ({ open, setOpen, reviewId, user }: Props) => {
         <Dialog open={open}>
             {message.length > 0 ? (
                 <div className='flex-column justify-center items-center p-10 gap-6'>
-                    <Typography>{message}</Typography>
+                    <Typography>{t(`${message}`)}</Typography>
                     <Button
                         variant='outlined'
                         onClick={() => {
@@ -48,25 +50,25 @@ const DeleteDialog = ({ open, setOpen, reviewId, user }: Props) => {
                             navigate(`/account/${user?.id_user}/user-reviews`);
                         }}
                     >
-                        Ok
+                        {t('admin.ok')}
                     </Button>
                 </div>
             ) : (
                 <div className='flex-column justify-center items-center p-10 gap-6'>
-                    <Typography>Confirm delete review</Typography>
+                    <Typography>{t('admin.confirmDelete')}</Typography>
                     <div className='flex-row justify-center gap-10'>
                         <Button
                             variant='contained'
                             onClick={handleConfirm}
                             disabled={disabled}
                         >
-                            Confirm
+                            {t('admin.confirm')}
                         </Button>
                         <Button
                             variant='outlined'
                             onClick={() => setOpen(false)}
                         >
-                            Cancel
+                            {t('admin.cancel')}
                         </Button>
                     </div>
                 </div>

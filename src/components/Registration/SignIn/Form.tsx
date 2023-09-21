@@ -5,22 +5,24 @@ import {
     Grid,
     TextField,
     Button,
+    useTheme,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import Link from '../../custom/Link';
 import { useAuthContext } from '../../../context/AuthContext';
 import { login } from '../../../services/user.services/login';
 import { useIsLoading } from '../../../context/IsLoadingProvider';
+import { useTranslation } from 'react-i18next';
+import { useNotificationContext } from '../../../context/NotificationContext';
+import { Link } from 'react-router-dom';
 
-interface Props {
-    setNotification: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const Form = ({ setNotification }: Props) => {
+const Form = () => {
+    const { setNotification } = useNotificationContext();
     const [disabled, setDisabled] = useState(false);
     const { setUserData } = useAuthContext();
     const { setIsLoading } = useIsLoading();
+    const { t } = useTranslation();
+    const theme = useTheme();
 
     const formik = useFormik({
         initialValues: {
@@ -38,8 +40,10 @@ const Form = ({ setNotification }: Props) => {
                 if (err instanceof Error) {
                     message = err.message;
                 }
-                console.log(message);
-                setNotification(message);
+                setNotification({
+                    type: 'error',
+                    message: message,
+                });
             } finally {
                 setDisabled(false);
                 setIsLoading(false);
@@ -58,7 +62,7 @@ const Form = ({ setNotification }: Props) => {
                 }}
             >
                 <Typography component='h1' variant='h5'>
-                    Sign in
+                    {t('registration.sign_in_header')}
                 </Typography>
                 <Box
                     component='form'
@@ -72,7 +76,7 @@ const Form = ({ setNotification }: Props) => {
                                 required
                                 fullWidth
                                 id='email'
-                                label='Email'
+                                label={t('general.email')}
                                 {...formik.getFieldProps('email')}
                             />
                         </Grid>
@@ -82,7 +86,7 @@ const Form = ({ setNotification }: Props) => {
                                 fullWidth
                                 type='password'
                                 id='password'
-                                label='Password'
+                                label={t('general.password')}
                                 {...formik.getFieldProps('password')}
                             />
                         </Grid>
@@ -94,12 +98,15 @@ const Form = ({ setNotification }: Props) => {
                         variant='contained'
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Sign in
+                        {t('registration.sign_in')}
                     </Button>
                     <Grid container justifyContent='flex-end'>
                         <Grid item>
-                            <Link to='/registration/create-account'>
-                                New to Recommend? Create your account
+                            <Link
+                                to='/registration/create-account'
+                                style={{ color: theme.palette.primary.main }}
+                            >
+                                {t('registration.sign_in_q')}
                             </Link>
                         </Grid>
                     </Grid>
@@ -110,6 +117,3 @@ const Form = ({ setNotification }: Props) => {
 };
 
 export default Form;
-function signIn(values: SignInData) {
-    throw new Error('Function not implemented.');
-}

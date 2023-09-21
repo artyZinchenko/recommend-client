@@ -18,13 +18,13 @@ const ImagesDisplay = ({ images }: Props) => {
             <div>
                 {images.map((image) => {
                     return (
-                        <div
-                            onClick={handleOpen}
-                            className='flex-column items-center'
-                            key={image}
-                        >
+                        <div className='flex-column items-center' key={image}>
                             <div className='preview-image-container pointer'>
-                                <img src={image} alt={image} />
+                                <img
+                                    src={image}
+                                    alt={image}
+                                    onClick={handleOpen}
+                                />
                             </div>
                         </div>
                     );

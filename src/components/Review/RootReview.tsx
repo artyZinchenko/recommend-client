@@ -1,46 +1,26 @@
-import { Box, Button, LinearProgress, Typography } from '@mui/material';
 import { useState } from 'react';
 import ReviewForm from './ReviewForm';
-import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../context/AuthContext';
+import { useRemoveNotification } from '../../hooks/useRemoveNotification';
+import { useNotificationContext } from '../../context/NotificationContext';
 
 interface Props {
     review?: ReviewDB;
 }
 const RootReview = ({ review }: Props) => {
-    const [notification, setNotification] = useState('');
     const [success, setSuccess] = useState(false);
-    const navigate = useNavigate();
-    const { user } = useAuthContext();
+    const { setNotification } = useNotificationContext();
+
+    useRemoveNotification(
+        setNotification as React.Dispatch<
+            React.SetStateAction<Notification | null>
+        >
+    );
 
     return (
         <div className='flex-column items-center'>
-            {notification.length > 0 && (
-                <div className='notification'>
-                    <Typography>{notification}</Typography>
-                    {success && (
-                        <Button
-                            variant='text'
-                            onClick={() =>
-                                navigate(
-                                    `/account/${user?.id_user}/user-reviews`
-                                )
-                            }
-                        >
-                            To my reviews
-                        </Button>
-                    )}
-                </div>
-            )}
-
-            {!success && (
-                <ReviewForm
-                    review={review}
-                    setSuccess={setSuccess}
-                    setNotification={setNotification}
-                />
-            )}
+            {!success && <ReviewForm review={review} setSuccess={setSuccess} />}
         </div>
     );
 };
+
 export default RootReview;

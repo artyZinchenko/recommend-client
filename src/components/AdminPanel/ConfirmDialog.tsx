@@ -9,9 +9,10 @@ import {
 import { useEffect, useState } from 'react';
 import { blockUser } from '../../services/admin.services/blockUser';
 import { useAuthContext } from '../../context/AuthContext';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import CircularProgress from '@mui/material/CircularProgress';
 import { grantAdmin } from '../../services/admin.services/grantAdmin';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     option: string;
@@ -31,6 +32,7 @@ const ConfirmDialog = ({ option, user, open, setOpen, handleClose }: Props) => {
     const [message, setMessage] = useState('');
     const [progress, setProgress] = useState(false);
     const queryClient = useQueryClient();
+    const { t } = useTranslation();
 
     const handleCancel = () => {
         setOpen(false);
@@ -65,14 +67,12 @@ const ConfirmDialog = ({ option, user, open, setOpen, handleClose }: Props) => {
     useEffect(() => {
         switch (option) {
             case 'block':
-                setDialogText(`Confirm you want to block ${user?.user_name}`);
-                setSwitchText(`Set blocked`);
+                setDialogText(`${t('admin.confirmBlock')} ${user?.user_name}`);
+                setSwitchText(`${t('admin.block')}`);
                 break;
             case 'admin':
-                setDialogText(
-                    `Confirm you want to grant admin rights to ${user?.user_name}`
-                );
-                setSwitchText(`Grant admin rights`);
+                setDialogText(`${t('admin.confirmGrant')}  ${user?.user_name}`);
+                setSwitchText(`${t('admin.grant')}`);
                 break;
             default:
                 setOpen(false);
@@ -98,7 +98,7 @@ const ConfirmDialog = ({ option, user, open, setOpen, handleClose }: Props) => {
                                 }}
                                 variant='outlined'
                             >
-                                Ok
+                                {t('admin.ok')}
                             </Button>
                         </div>
                     ) : (
@@ -123,13 +123,13 @@ const ConfirmDialog = ({ option, user, open, setOpen, handleClose }: Props) => {
                                         disabled={disabled}
                                         onClick={handleConfirm}
                                     >
-                                        Confirm
+                                        {t('admin.confirm')}
                                     </Button>
                                     <Button
                                         variant='outlined'
                                         onClick={handleCancel}
                                     >
-                                        Cancel
+                                        {t('admin.cancel')}
                                     </Button>
                                 </div>
                             </div>

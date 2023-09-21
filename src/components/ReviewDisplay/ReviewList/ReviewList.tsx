@@ -1,10 +1,14 @@
+import SkeletonReviewSummary from '../../Skeleton/SkeletonReviewSummary';
 import ReviewSummary from './ReviewSummary';
 
 interface Props {
-    data: ReviewDB[];
+    data: ReviewDB[] | undefined;
 }
 
 const ReviewList = ({ data }: Props) => {
+    if (!data) {
+        return <SkeletonReviewSummary />;
+    }
     return (
         <div className='reviews-list'>
             {data.map((review) => {

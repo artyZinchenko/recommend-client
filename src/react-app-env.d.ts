@@ -73,7 +73,7 @@ interface CommentDB {
 }
 
 interface RateDB {
-    reviewId: string;
+    productId: string;
     userId: string;
     rate_number: number;
 }
@@ -103,12 +103,24 @@ interface AuthorName {
     user_name: string;
 }
 
+interface ProductDB {
+    product_id: number;
+    product_name: string;
+    type: string;
+    average_rating: number;
+    ratings: RateDB[];
+}
+
+interface NewProduct {
+    product_name: string;
+    type: ProductType;
+}
+
 interface ReviewDB {
     review_id: string;
     name: string;
     text: string;
-    product: string;
-    type: string;
+    product: ProductDB;
     status: string;
     images: string[];
     score: number;
@@ -117,22 +129,24 @@ interface ReviewDB {
     tags: TagObject[];
     editable?: boolean;
     likes: LikeDB[];
-    ratings: RateDB[];
-    average_rating: number;
     author: AuthorName;
 }
 
 interface NewReview {
     name: string;
-    productType: string;
-    productTitle: string;
+    product: NewProduct | ProductDB | null;
     images: string[];
     text: string;
     tags: string[];
     score: number;
 }
 
-interface UpdateReview extends NewReview {
+interface UpdateReview {
+    name: string;
+    images: string[];
+    text: string;
+    tags: string[];
+    score: number;
     review_id: string;
     authorId: string;
 }

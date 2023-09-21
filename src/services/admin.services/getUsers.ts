@@ -20,7 +20,7 @@ export const getUsers = async (token: string): Promise<GetUsersResponse> => {
         console.log(err);
         let message = 'Error ';
         if (err instanceof AxiosError) {
-            message += err.response?.data.message;
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

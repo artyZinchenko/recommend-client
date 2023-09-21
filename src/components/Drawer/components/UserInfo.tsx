@@ -1,10 +1,9 @@
-import { ListItem, Typography } from '@mui/material';
+import { ListItem } from '@mui/material';
 import { Avatar, ListItemText } from '@mui/material';
 import { useAuthContext } from '../../../context/AuthContext';
 import TotalLikes from './TotalLikes';
 
-interface Props {}
-const UserInfo = (props: Props) => {
+const UserInfo = () => {
     const { user } = useAuthContext();
 
     return (

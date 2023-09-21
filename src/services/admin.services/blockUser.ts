@@ -22,14 +22,12 @@ export const blockUser = async (
                 },
             }
         );
-        console.log(response.data.user);
 
         return response.data;
     } catch (err) {
         let message = '';
         if (err instanceof AxiosError) {
-            message += err.message;
-            message += ' ' + err.response?.data.message || '';
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

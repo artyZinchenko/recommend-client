@@ -1,9 +1,10 @@
-import { Params, useNavigate } from 'react-router-dom';
+import { Params } from 'react-router-dom';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { addLike } from '../../../../services/feedback.services/addLike';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     user: User | null;
@@ -16,13 +17,14 @@ const Like = ({ user, params, token, likes }: Props) => {
     const queryClient = useQueryClient();
     const [blocked, setBlocked] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const liked = !!likes.find((like) => {
             return like.userId === user?.id_user;
         });
         setIsLiked(liked);
-    }, []);
+    }, [setIsLiked]);
 
     const handleClick = async () => {
         if (blocked || isLiked) return;
@@ -63,7 +65,7 @@ const Like = ({ user, params, token, likes }: Props) => {
                 variant='subtitle2'
                 color={isLiked ? 'primary' : 'gray'}
             >
-                Useful
+                {t('feedback.useful')}
             </Typography>
         </div>
     );

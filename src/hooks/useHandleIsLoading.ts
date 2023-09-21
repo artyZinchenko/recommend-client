@@ -4,7 +4,8 @@ export const useHandleIsLoading = (
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
     isLoading: boolean,
     isSuccess: boolean,
-    isError: boolean
+    isError: boolean,
+    isFetching: boolean
 ) => {
     useEffect(() => {
         return () => setIsLoading(false);
@@ -14,11 +15,14 @@ export const useHandleIsLoading = (
         if (isLoading) {
             setIsLoading(true);
         }
+        if (isFetching) {
+            setIsLoading(true);
+        }
         if (isSuccess) {
             setIsLoading(false);
         }
         if (isError) {
             setIsLoading(false);
         }
-    }, [isSuccess, isLoading, isError]);
+    }, [isSuccess, isLoading, isError, isFetching]);
 };

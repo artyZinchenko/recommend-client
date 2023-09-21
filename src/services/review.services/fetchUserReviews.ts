@@ -12,7 +12,6 @@ export const fetchUserReviews = async (
     token: string
 ): Promise<FetchUserReviewsResponse> => {
     try {
-        console.log(requsestedId);
         const response = await axios.get(
             `${apiBaseUrl}/user-reviews/${requsestedId}`,
             {
@@ -27,7 +26,7 @@ export const fetchUserReviews = async (
         console.log(err);
         let message = 'Error ';
         if (err instanceof AxiosError) {
-            message += err.response?.data.message;
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

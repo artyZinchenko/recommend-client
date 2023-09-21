@@ -1,28 +1,21 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import {
-    KeyboardArrowRight,
-    KeyboardArrowLeft,
-    Close,
-} from '@mui/icons-material';
-import { MobileStepper } from '@mui/material';
+import { KeyboardArrowRight, KeyboardArrowLeft } from '@mui/icons-material';
+import { MobileStepper, styled } from '@mui/material';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
-const style = {
+const StyledBox = styled(Box)(({ theme }) => ({
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '100%',
     height: '100vh',
-    bgcolor: '#cccbcce9',
-    boxShadow: 24,
+    backgroundColor: theme.palette.background.paper,
     p: 4,
-};
+}));
 
 interface Props {
     handleOpen: () => void;
@@ -52,7 +45,7 @@ const Gallery = ({ handleClose, handleOpen, open, images }: Props) => {
                 aria-labelledby='modal-modal-title'
                 aria-describedby='modal-modal-description'
             >
-                <Box sx={style}>
+                <StyledBox>
                     <div className='flex-row justify-end pointer'>
                         <CloseIcon
                             fontSize='large'
@@ -103,7 +96,7 @@ const Gallery = ({ handleClose, handleOpen, open, images }: Props) => {
                             />
                         </div>
                     </div>
-                </Box>
+                </StyledBox>
             </Modal>
         </div>
     );

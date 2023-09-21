@@ -1,6 +1,9 @@
 import { useUserReviews } from '../../hooks/useUserReviews';
 import { useAuthContext } from '../../context/AuthContext';
-import ReviewList from '../ReviewDisplay/ReviewList/ReviewList';
+import { useHandleIsLoading } from '../../hooks/useHandleIsLoading';
+import { useIsLoading } from '../../context/IsLoadingProvider';
+import Table from '../Table/Table';
+import { Box } from '@mui/material';
 
 interface Props {
     requestedId: string | undefined;
@@ -8,22 +11,21 @@ interface Props {
 
 const UserReviews = ({ requestedId }: Props) => {
     const { user, token } = useAuthContext();
+    const { setIsLoading } = useIsLoading();
 
-    const { isLoading, isError, data, error } = useUserReviews(
+    const { isLoading, isError, data, isSuccess, isFetching } = useUserReviews(
         user,
         token,
         requestedId
     );
 
-    if (isLoading) {
-        return <span>Loading...</span>;
-    }
+    useHandleIsLoading(setIsLoading, isLoading, isSuccess, isError, isFetching);
 
-    if (!data) {
-        return <span>Error</span>;
-    }
-
-    return <ReviewList data={data} />;
+    return (
+        <Box sx={{ overflow: 'auto', maxWidth: '100%' }}>
+            <Table data={data} />
+        </Box>
+    );
 };
 
 export default UserReviews;

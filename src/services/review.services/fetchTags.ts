@@ -16,7 +16,7 @@ export const fetchTags = async (): Promise<FetchTagsResponse> => {
         console.log(err);
         let message = 'Error ';
         if (err instanceof AxiosError) {
-            message += err.response?.data.message;
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

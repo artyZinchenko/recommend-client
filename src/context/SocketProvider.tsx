@@ -26,7 +26,7 @@ export function SocketProvider({ children }: Props) {
     const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3001');
+        const newSocket = io('https://recommend-server.onrender.com');
         setSocket(newSocket);
 
         return () => {

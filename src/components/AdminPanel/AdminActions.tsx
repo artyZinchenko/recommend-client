@@ -1,7 +1,8 @@
-import { DialogTitle, MenuItem } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConfirmDialog from './ConfirmDialog';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     handleClose: () => void;
@@ -11,6 +12,7 @@ interface Props {
 const AdminActions = ({ handleClose, user }: Props) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [option, setOption] = useState('');
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const handleManage = () => {
@@ -30,9 +32,9 @@ const AdminActions = ({ handleClose, user }: Props) => {
     return (
         <>
             <div style={{ minWidth: '15em' }}>
-                <MenuItem onClick={handleManage}>Manage reviews</MenuItem>
-                <MenuItem onClick={handleBlock}>Block user</MenuItem>
-                <MenuItem onClick={handleGrant}>Grant admin rights</MenuItem>
+                <MenuItem onClick={handleManage}>{t('admin.manage')}</MenuItem>
+                <MenuItem onClick={handleBlock}>{t('admin.block')}</MenuItem>
+                <MenuItem onClick={handleGrant}>{t('admin.grant')}</MenuItem>
             </div>
             <ConfirmDialog
                 user={user}

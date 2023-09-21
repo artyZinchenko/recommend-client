@@ -2,6 +2,7 @@ import { Params, useNavigate } from 'react-router-dom';
 import Like from './Like';
 import Rate from './Rate';
 import { Typography, Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     user: User | null;
@@ -12,13 +13,14 @@ interface Props {
 
 const Feedback = ({ user, params, token, review }: Props) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const toSignIn = () => {
         navigate('/registration/sign-in');
     };
 
     return (
-        <div className='flex-colums pb-10'>
+        <div className='flex-colums pb-2'>
             <hr className='horizontal-line pt-2' />
             {user ? (
                 <div className='flex-row justify-between'>
@@ -30,7 +32,7 @@ const Feedback = ({ user, params, token, review }: Props) => {
                     />
                     <Rate
                         user={user}
-                        params={params}
+                        productId={review.product.product_id}
                         token={token}
                         review={review}
                     />
@@ -38,10 +40,10 @@ const Feedback = ({ user, params, token, review }: Props) => {
             ) : (
                 <div className='flex-row justify-start items-baseline gap-3'>
                     <Typography variant='subtitle2'>
-                        Please sign in to like or comment
+                        {t('feedback.askSignin')}
                     </Typography>
                     <Button variant='text' onClick={toSignIn} size='small'>
-                        Sign in
+                        {t('feedback.signin')}
                     </Button>
                 </div>
             )}

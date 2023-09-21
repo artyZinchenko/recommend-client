@@ -3,6 +3,8 @@ import { InlineAutocomplete } from '@primer/react/drafts';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { fetchTags } from '../../../services/review.services/fetchTags';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '@mui/material';
 
 interface Props {
     setTagInput: React.Dispatch<React.SetStateAction<string>>;
@@ -11,6 +13,8 @@ interface Props {
 
 const AddTags = ({ setTagInput, tagInput }: Props) => {
     const [suggestions, setSuggestions] = useState<string[]>([]);
+    const { t } = useTranslation();
+    const theme = useTheme();
 
     const { data } = useQuery<Tag[]>({
         queryKey: ['tags'],
@@ -42,7 +46,11 @@ const AddTags = ({ setTagInput, tagInput }: Props) => {
                     onHideSuggestions={() => setSuggestions([])}
                 >
                     <Textarea
-                        placeholder='#add-tags'
+                        sx={{
+                            backgroundColor: theme.palette.background.default,
+                            color: theme.palette.text.primary,
+                        }}
+                        placeholder={t('tags.add')}
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         block={true}

@@ -10,16 +10,16 @@ interface AddRatingResponse {
 
 export const addRating = async (
     token: string,
-    reviewId: string | undefined,
+    productId: number | undefined,
     userId: string | undefined,
     rating: number
 ): Promise<AddRatingResponse> => {
-    if (!reviewId || !userId) throw new Error('No review-id or user-id');
+    if (!productId || !userId) throw new Error('No review-id or user-id');
 
     try {
         const response = await axios.post(
             `${apiBaseUrl}/add-rating`,
-            { reviewId, userId, rating },
+            { productId, userId, rating },
             {
                 headers: {
                     Authorization: 'Bearer ' + token,
@@ -32,7 +32,7 @@ export const addRating = async (
         console.log(err);
         let message = 'Error ';
         if (err instanceof AxiosError) {
-            message += err.response?.data.message;
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

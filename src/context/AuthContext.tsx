@@ -6,18 +6,10 @@ import {
     useEffect,
     ReactNode,
 } from 'react';
-import {
-    getAuth,
-    getRedirectResult,
-    onAuthStateChanged,
-    signInWithRedirect,
-    signOut,
-} from 'firebase/auth';
-import { app } from '../firebase-config';
 import { refresh } from '../services/user.services/refresh';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { LoginResponse, login } from '../services/user.services/login';
+import { LoginResponse } from '../services/user.services/login';
 
 interface AuthContextValue {
     user: User | null;
@@ -26,8 +18,6 @@ interface AuthContextValue {
     token: string;
     setToken: React.Dispatch<React.SetStateAction<string>>;
     setUserData: (data: LoginResponse) => void;
-    // resolvingUser: boolean;
-    // setResolvingUser: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContextValue>({
@@ -37,8 +27,6 @@ const AuthContext = createContext<AuthContextValue>({
     token: '',
     setToken: () => {},
     setUserData: () => {},
-    // resolvingUser: false,
-    // setResolvingUser: () => {},
 });
 
 interface Props {
@@ -58,7 +46,6 @@ export const AuthContextProvider = ({ children }: Props) => {
         async function refreshUser(token: string) {
             const data = await refresh(token);
 
-            console.log('refresh reult', data);
             if (data.user) {
                 setUser(data.user);
                 setToken(token);
@@ -93,8 +80,6 @@ export const AuthContextProvider = ({ children }: Props) => {
                 token,
                 setToken,
                 setUserData,
-                // resolvingUser,
-                // setResolvingUser,
             }}
         >
             {children}

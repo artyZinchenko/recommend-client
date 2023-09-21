@@ -7,12 +7,12 @@ import {
     Grid,
     TextField,
     Button,
+    useMediaQuery,
+    useTheme,
 } from '@mui/material';
 import { useState } from 'react';
 import { createReview } from '../../services/review.services/createReview';
 import { useAuthContext } from '../../context/AuthContext';
-import { ProductType, productTypes } from '../../data/productTypes';
-import SelectType from './components/SelectType';
 import AddTags from './components/AddTags';
 import { parseTags } from './utils/parseTags';
 import ImageDropzone from './components/ImageDropzone';
@@ -23,22 +23,41 @@ import './Review.scss';
 import { tagsToString } from './utils/tagsToString';
 import DeleteDialog from './components/DeleteDialog';
 import { useIsLoading } from '../../context/IsLoadingProvider';
+import { useTranslation } from 'react-i18next';
+import SelectProduct from './components/SelectProduct';
+import { useNotificationContext } from '../../context/NotificationContext';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     review?: ReviewDB;
-    setNotification: React.Dispatch<React.SetStateAction<string>>;
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
+interface ProductToDB {
+    product_id?: number;
+    product_name: string;
+    type: string;
+}
+
+const ReviewForm = ({ review, setSuccess }: Props) => {
     const { setIsLoading } = useIsLoading();
+    const { setNotification } = useNotificationContext();
+    const navigate = useNavigate();
     const [disabled, setDisabled] = useState(false);
     const [tagInput, setTagInput] = useState(
         review ? tagsToString(review.tags) : ''
     );
     const { token, user } = useAuthContext();
-    const [productType, setProductType] = useState<ProductType>(
-        productTypes[0]
+    const [product, setProduct] = useState<ProductToDB>(
+        review?.product
+            ? {
+                  product_name: review.product.product_name,
+                  type: review.product.type,
+              }
+            : {
+                  product_name: '',
+                  type: 'Book',
+              }
     );
     const [images, setImages] = useState<ImageFile[]>([]);
     const [imagesEdit, setImagesEdit] = useState<string[]>(
@@ -46,12 +65,14 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
     );
     const [score, setScore] = useState(review?.score || 1);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const { t } = useTranslation();
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     const formik = useFormik({
         initialValues: {
             name: review?.name || '',
-            productTitle: review?.product || '',
-            productType: review?.type || 'Book',
+            product: product,
             text: review?.text || '',
             tags: [],
             images: [],
@@ -65,14 +86,12 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                 const imageLinks = await getLinks(images);
 
                 if (review) {
-                    const response = await updateReview(
+                    await updateReview(
                         {
                             authorId: review.authorId,
                             review_id: review.review_id,
                             name: values.name,
                             images: [...imageLinks, ...imagesEdit],
-                            productTitle: values.productTitle,
-                            productType: productType.type,
                             text: values.text,
                             tags: parseTags(tagInput),
                             score,
@@ -80,14 +99,23 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                         token
                     );
                     setSuccess(true);
-                    setNotification(response.message);
+                    setNotification({
+                        type: 'success',
+                        message: 'notification.review.created',
+                        action: {
+                            name: 'notification.review.to_reviews',
+                            handler: () =>
+                                navigate(
+                                    `/account/${user?.id_user}/user-reviews`
+                                ),
+                        },
+                    });
                 } else {
-                    const response = await createReview(
+                    await createReview(
                         {
                             name: values.name,
                             images: imageLinks,
-                            productTitle: values.productTitle,
-                            productType: productType.type,
+                            product: product,
                             text: values.text,
                             tags: parseTags(tagInput),
                             score,
@@ -95,14 +123,27 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                         token
                     );
                     setSuccess(true);
-                    setNotification(response.message);
+                    setNotification({
+                        type: 'success',
+                        message: 'notification.review.created',
+                        action: {
+                            name: 'notification.review.to_reviews',
+                            handler: () =>
+                                navigate(
+                                    `/account/${user?.id_user}/user-reviews`
+                                ),
+                        },
+                    });
                 }
             } catch (err) {
                 let message = 'Error';
                 if (err instanceof Error) {
                     message = err.message;
                 }
-                setNotification(message);
+                setNotification({
+                    type: 'error',
+                    message: message,
+                });
             } finally {
                 setIsLoading(false);
                 setDisabled(false);
@@ -111,9 +152,9 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
     });
 
     return (
-        <Container component='main' maxWidth='xs'>
+        <Container component='main' maxWidth={matches ? 'xs' : 'md'}>
             <Typography component='h1' variant='h5'>
-                {review ? 'Edit Review' : 'Create New Review'}
+                {review ? `${t('create.edit')}` : `${t('create.create')}`}
             </Typography>
             <Box
                 component='form'
@@ -122,17 +163,18 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                 sx={{ mt: 3 }}
             >
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <SelectType
-                            productType={productType}
-                            setProductType={setProductType}
+                    {!review && (
+                        <SelectProduct
+                            setProduct={setProduct}
+                            product={product}
                         />
-                    </Grid>
+                    )}
+
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
                             id='name'
-                            label='Review Title'
+                            label={t('create.title')}
                             {...formik.getFieldProps('name')}
                             error={
                                 formik.touched.name &&
@@ -140,22 +182,6 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                             }
                             helperText={
                                 formik.touched.name && formik.errors.name
-                            }
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            id='productTitle'
-                            label='Product title'
-                            {...formik.getFieldProps('productTitle')}
-                            error={
-                                formik.touched.productTitle &&
-                                Boolean(formik.errors.productTitle)
-                            }
-                            helperText={
-                                formik.touched.productTitle &&
-                                formik.errors.productTitle
                             }
                         />
                     </Grid>
@@ -182,7 +208,7 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                             fullWidth
                             multiline
                             minRows={6}
-                            label='Text'
+                            label={t('general.text')}
                             type='text'
                             id='text'
                             {...formik.getFieldProps('text')}
@@ -203,7 +229,9 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                     variant='contained'
                     sx={{ mt: 3, mb: 2 }}
                 >
-                    {review ? 'Post edited Review' : 'Post Review'}
+                    {review
+                        ? `${t('create.postEdited')}`
+                        : `${t('create.post')}`}
                 </Button>
                 {review && (
                     <Button
@@ -213,7 +241,7 @@ const ReviewForm = ({ review, setNotification, setSuccess }: Props) => {
                         variant='contained'
                         sx={{ mb: 2 }}
                     >
-                        Delete review
+                        {t('create.deleteReview')}
                     </Button>
                 )}
             </Box>

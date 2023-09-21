@@ -1,6 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchReviews } from '../services/review.services/fetchReviews';
-import { formatReviews } from './utils/formatReviews';
 import { querySwitch } from './utils/querySwitch';
 
 export const useReviewsQuery = (
@@ -8,15 +6,17 @@ export const useReviewsQuery = (
     query: string | null,
     user: User | null
 ) => {
-    const { isLoading, isError, isSuccess, data, error } = useQuery({
-        queryKey: ['reviews', type, query],
-        queryFn: async () => {
-            const data = await querySwitch(type, query);
-            if (!data) throw new Error('Failed to load data');
-            return formatReviews(data.reviews, user);
-        },
-        staleTime: 5 * 60 * 1000,
-    });
+    const { isLoading, isError, isSuccess, data, error, isFetching } = useQuery(
+        {
+            queryKey: ['reviews', type, query],
+            queryFn: async () => {
+                const data = await querySwitch(type, query);
+                if (!data) throw new Error('Failed to load data');
+                return data.reviews;
+            },
+            staleTime: 5 * 60 * 1000,
+        }
+    );
 
     return {
         isLoading,
@@ -24,5 +24,6 @@ export const useReviewsQuery = (
         isSuccess,
         data,
         error,
+        isFetching,
     };
 };

@@ -21,7 +21,7 @@ export const refresh = async (token: string): Promise<RefreshResponse> => {
         console.log(err);
         let message = 'Error ';
         if (err instanceof AxiosError) {
-            message += err.response?.data.message;
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

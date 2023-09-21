@@ -15,7 +15,6 @@ export const signInFirebase = async (
     emailForTwitter: string | null
 ): Promise<LoginResponse> => {
     try {
-        console.log(emailForTwitter);
         const response = await axios.post(`${apiBaseUrl}/signin-firebase`, {
             uid,
             token,
@@ -27,7 +26,7 @@ export const signInFirebase = async (
         console.log(err);
         let message = 'Error ';
         if (err instanceof AxiosError) {
-            message += err.response?.data.message;
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

@@ -13,6 +13,7 @@ import { FileError, useDropzone } from 'react-dropzone';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import '../Review.scss';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     setImages: React.Dispatch<React.SetStateAction<ImageFile[]>>;
@@ -36,10 +37,10 @@ const ImageDropzone = ({
 }: Props) => {
     const [rejected, setRejected] = useState<RejecedFile[]>([]);
     const [cancelDeleteButton, setCancelDeleteButton] = useState(false);
+    const { t } = useTranslation();
 
     const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
         if (acceptedFiles?.length) {
-            console.log(acceptedFiles);
             setImages((previousImages) => [
                 ...previousImages,
                 ...acceptedFiles.map((file: File) => {
@@ -50,7 +51,6 @@ const ImageDropzone = ({
             ]);
         }
         if (rejectedFiles?.length) {
-            console.log(rejectedFiles);
             setRejected((previousFiles) => [
                 ...previousFiles,
                 ...rejectedFiles,
@@ -106,18 +106,17 @@ const ImageDropzone = ({
                 <InsertPhotoIcon fontSize='large' color='primary' />
                 <input {...getInputProps()} />
                 {isDragActive ? (
-                    <Typography>Drop the image here ...</Typography>
+                    <Typography>{t('create.imageDrag')}</Typography>
                 ) : (
-                    <Typography>
-                        Drag 'n' drop some images here, or click to select
-                        images
-                    </Typography>
+                    <Typography>{t('create.imageDrop')}</Typography>
                 )}
             </Paper>
             {(images.length > 0 || imagesEdit.length > 0) && (
                 <div className='uploaded-container'>
                     <div className='flex justify-center pt-1'>
-                        <Typography variant='h6'>Uploaded Images</Typography>
+                        <Typography variant='h6'>
+                            {t('create.uploaded')}
+                        </Typography>
                     </div>
                     <div className='images-container'>
                         <ImageList
@@ -148,14 +147,14 @@ const ImageDropzone = ({
                                             }
                                         />
                                         <Typography variant='subtitle2'>
-                                            Existing image
+                                            {t('create.existingImg')}
                                         </Typography>
                                     </ImageListItem>
                                 );
                             })}
                             {cancelDeleteButton && (
                                 <Button onClick={revertChanges} color='info'>
-                                    Revert changes
+                                    {t('create.revert')}
                                 </Button>
                             )}
                             {images.map((item) => {
@@ -188,7 +187,7 @@ const ImageDropzone = ({
             )}
             {rejected.length > 0 && (
                 <>
-                    <Typography variant='h6'>Rejected images</Typography>
+                    <Typography variant='h6'>{t('rejectedImages')}</Typography>
                     <List>
                         {rejected.map(({ file, errors }) => {
                             return (
@@ -210,7 +209,7 @@ const ImageDropzone = ({
                                             removeRejected(file.name)
                                         }
                                     >
-                                        Delete
+                                        {t('general.delete')}
                                     </Button>
                                 </ListItem>
                             );

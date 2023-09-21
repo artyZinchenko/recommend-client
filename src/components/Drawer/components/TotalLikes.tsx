@@ -4,11 +4,10 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import { useAuthContext } from '../../../context/AuthContext';
 import { Skeleton, Typography } from '@mui/material';
 
-interface Props {}
-const TotalLikes = (props: Props) => {
+const TotalLikes = () => {
     const { user, token } = useAuthContext();
 
-    const { data, isSuccess, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError } = useQuery({
         queryKey: ['total_likes', user?.id_user],
         queryFn: async () => {
             const data = await getTotalLikes(token);

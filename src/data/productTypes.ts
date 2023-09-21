@@ -11,4 +11,5 @@ export const productTypes: ProductType[] = [
     { type: 'Music_Album', name: 'Music Album' },
     { type: 'Board_Game', name: 'Board Game' },
     { type: 'Mobile_App', name: 'Mobile App' },
+    { type: 'Other', name: 'Other' },
 ];

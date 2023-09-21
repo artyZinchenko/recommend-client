@@ -1,29 +1,24 @@
 import { useState } from 'react';
 import Form from './Form';
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-interface Props {
-    setNotification: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const RootCreateAcc = ({ setNotification }: Props) => {
+const RootCreateAcc = () => {
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <div className='flex-column justify-center items-center'>
             {success ? (
                 <div className='flex-column items-center align-center pt-2'>
                     <Button onClick={() => navigate('/registration/sign-in')}>
-                        Sign in
+                        {t('registration.sign_in')}
                     </Button>
                 </div>
             ) : (
-                <Form
-                    setNotification={setNotification}
-                    setSuccess={setSuccess}
-                />
+                <Form setSuccess={setSuccess} />
             )}
         </div>
     );

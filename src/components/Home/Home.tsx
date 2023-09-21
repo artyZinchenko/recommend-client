@@ -1,17 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
-import { useReviews } from '../../hooks/useReviews';
-import DetailedReview from '../ReviewDisplay/DetailedReview/DetailedReview';
-import ReviewList from '../ReviewDisplay/ReviewList/ReviewList';
-import { useAuthContext } from '../../context/AuthContext';
 import TagCloud from './components/TagCloud';
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import BestReviews from './components/BestReviews';
 import LatestReviews from './components/LatestReviews';
-import { Button, Paper, Theme, styled, useTheme } from '@mui/material';
+import { Button, styled } from '@mui/material';
 import './Home.scss';
-import { Trans, useTranslation } from 'react-i18next';
-
-interface Props {}
+import { useTranslation } from 'react-i18next';
 
 interface StyledProps {
     selected: boolean;
@@ -23,9 +16,8 @@ const StyledButton = styled(Button, {
     color: selected ? theme.palette.primary.dark : theme.palette.primary.light,
 }));
 
-const Home = (props: Props) => {
+const Home = () => {
     const [bestSelected, setBestSelected] = useState(true);
-    const theme = useTheme();
     const { t } = useTranslation();
 
     return (
@@ -45,7 +37,7 @@ const Home = (props: Props) => {
                         selected={bestSelected ? false : true}
                         onClick={() => setBestSelected(false)}
                     >
-                        Last reviews
+                        {t('home.last')}
                     </StyledButton>
                 </div>
                 {bestSelected ? <BestReviews /> : <LatestReviews />}

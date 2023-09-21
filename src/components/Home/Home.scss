@@ -1,17 +1,24 @@
 .tag-cloud {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    gap: 1;
     max-width: 20em;
+    width: 20em;
+    height: 17em;
+    overflow: visible;
 }
 
 .container-cloud {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: 17em;
+    justify-content: flex-start;
+    height: 20em;
+    min-height: 20em;
+    overflow: hidden;
 }
 
 .home-reviews-container {

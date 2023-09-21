@@ -8,7 +8,6 @@ interface FetchReviewsResponse {
 }
 
 export const fetchLatestReviews = async (): Promise<FetchReviewsResponse> => {
-    console.log('gferereree');
     try {
         const response = await axios.get(`${apiBaseUrl}/latest-reviews`);
 
@@ -17,7 +16,7 @@ export const fetchLatestReviews = async (): Promise<FetchReviewsResponse> => {
         console.log(err);
         let message = 'Error ';
         if (err instanceof AxiosError) {
-            message += err.response?.data.message;
+            message = err.response?.data.message;
         }
         throw new Error(message);
     }

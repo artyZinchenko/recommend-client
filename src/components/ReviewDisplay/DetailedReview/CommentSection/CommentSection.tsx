@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Params } from 'react-router-dom';
 import { fetchComments } from '../../../../services/comment.services/fetchComments';
-import { Button, Paper } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useAuthContext } from '../../../../context/AuthContext';
 import { createComment } from '../../../../services/comment.services/createComment';
 import './Comment.scss';
@@ -9,6 +9,7 @@ import CommentsField from './CommentsField';
 import { useEffect, useRef, useState } from 'react';
 import InputComment from './InputComment';
 import { useSocket } from '../../../../context/SocketProvider';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     user: User | null;
@@ -23,6 +24,7 @@ const CommentSection = ({ user, params }: Props) => {
     const [shouldScrollDown, setShoulScrollDown] = useState(false);
     const queryClient = useQueryClient();
     const messageEnd = useRef<HTMLDivElement | null>(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         socket?.emit('joinReview', params.reviewId);
@@ -43,7 +45,7 @@ const CommentSection = ({ user, params }: Props) => {
         };
     }, []);
 
-    const { isLoading, isError, data, error } = useQuery({
+    const { isError, data } = useQuery({
         queryKey: [params.reviewId, 'comments'],
         queryFn: async () => {
             if (!params.reviewId) throw new Error('No reviewId');
@@ -87,7 +89,10 @@ const CommentSection = ({ user, params }: Props) => {
     return (
         <div className='comment-area gap-3'>
             {data && data.length > 0 && (
-                <CommentsField data={data} messageEnd={messageEnd} />
+                <>
+                    <Typography>{t('comment.comments')}</Typography>
+                    <CommentsField data={data} messageEnd={messageEnd} />
+                </>
             )}
             {token && (
                 <InputComment

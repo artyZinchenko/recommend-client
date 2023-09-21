@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { Label } from '@primer/react';
 import { SyntheticEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     setScore: React.Dispatch<React.SetStateAction<number>>;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const Score = ({ score, setScore }: Props) => {
+    const { t } = useTranslation();
+
     const handleSliderChange = (
         event: Event | SyntheticEvent<Element, Event>,
         newValue: number | number[]
@@ -21,7 +24,7 @@ const Score = ({ score, setScore }: Props) => {
 
     return (
         <Box className='flex items-center'>
-            <Typography>Rate product</Typography>
+            <Typography variant='body1'>{t('create.rate')}</Typography>
             <Slider
                 aria-label='Score'
                 value={score}

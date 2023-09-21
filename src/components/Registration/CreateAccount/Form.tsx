@@ -1,7 +1,5 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,18 +7,23 @@ import Container from '@mui/material/Container';
 import { validationSchema } from '../validationSchema';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import Link from '../../custom/Link';
 import { createAccount } from '../../../services/user.services/createAccount';
 import { useIsLoading } from '../../../context/IsLoadingProvider';
+import { useTranslation } from 'react-i18next';
+import { useNotificationContext } from '../../../context/NotificationContext';
+import { useTheme } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 interface Props {
-    setNotification: React.Dispatch<React.SetStateAction<string>>;
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Form = ({ setNotification, setSuccess }: Props) => {
+const Form = ({ setSuccess }: Props) => {
+    const { setNotification } = useNotificationContext();
     const [disabled, setDisabled] = useState(false);
     const { setIsLoading } = useIsLoading();
+    const { t } = useTranslation();
+    const theme = useTheme();
 
     const formik = useFormik({
         initialValues: {
@@ -34,19 +37,25 @@ const Form = ({ setNotification, setSuccess }: Props) => {
             setDisabled(true);
             setIsLoading(true);
             try {
-                const response = await createAccount({
+                await createAccount({
                     name: values.name,
                     email: values.email,
                     password: values.password,
                 });
                 setSuccess(true);
-                setNotification(response.message);
+                setNotification({
+                    type: 'success',
+                    message: 'registration.accout_created',
+                });
             } catch (err) {
                 let message = 'Error';
                 if (err instanceof Error) {
                     message = err.message;
                 }
-                setNotification(message);
+                setNotification({
+                    type: 'error',
+                    message: message,
+                });
             } finally {
                 setDisabled(false);
                 setIsLoading(false);
@@ -65,7 +74,7 @@ const Form = ({ setNotification, setSuccess }: Props) => {
                 }}
             >
                 <Typography component='h1' variant='h5'>
-                    Create Account
+                    {t('registration.create_acc_header')}
                 </Typography>
                 <Box
                     component='form'
@@ -76,11 +85,10 @@ const Form = ({ setNotification, setSuccess }: Props) => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
-                                // name='name'
                                 required
                                 fullWidth
                                 id='name'
-                                label='Name'
+                                label={t('general.name')}
                                 {...formik.getFieldProps('name')}
                                 error={
                                     formik.touched.name &&
@@ -96,7 +104,7 @@ const Form = ({ setNotification, setSuccess }: Props) => {
                                 required
                                 fullWidth
                                 id='email'
-                                label='Email Address'
+                                label={t('general.email')}
                                 {...formik.getFieldProps('email')}
                                 error={
                                     formik.touched.email &&
@@ -105,19 +113,15 @@ const Form = ({ setNotification, setSuccess }: Props) => {
                                 helperText={
                                     formik.touched.email && formik.errors.email
                                 }
-                                // name='email'
-                                // autoComplete='email'
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 required
                                 fullWidth
-                                // name='password'
-                                label='Password'
+                                label={t('general.password')}
                                 type='password'
                                 id='password'
-                                // autoComplete='new-password'
                                 {...formik.getFieldProps('password')}
                                 error={
                                     formik.touched.password &&
@@ -133,8 +137,7 @@ const Form = ({ setNotification, setSuccess }: Props) => {
                             <TextField
                                 required
                                 fullWidth
-                                // name='password'
-                                label='Confirm password'
+                                label={t('general.confirmPassword')}
                                 type='password'
                                 id='confirmPassword'
                                 autoComplete='new-password'
@@ -157,12 +160,15 @@ const Form = ({ setNotification, setSuccess }: Props) => {
                         variant='contained'
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Create Account
+                        {t('registration.create_acc_button')}
                     </Button>
                     <Grid container justifyContent='flex-end'>
                         <Grid item>
-                            <Link to='/registration/sign-in'>
-                                Already have an account? Sign in
+                            <Link
+                                to='/registration/sign-in'
+                                style={{ color: theme.palette.primary.main }}
+                            >
+                                {t('registration.create_acc_q')}
                             </Link>
                         </Grid>
                     </Grid>

@@ -5,46 +5,46 @@ import {
     InputLabel,
     SelectChangeEvent,
 } from '@mui/material';
-import { ProductType, productTypes } from '../../../data/productTypes';
-import { useState } from 'react';
-import { useFormikContext } from 'formik';
+import { productTypes } from '../../../data/productTypes';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
-    setProductType: React.Dispatch<React.SetStateAction<ProductType>>;
-    productType: ProductType;
+    setTypeText: React.Dispatch<React.SetStateAction<string>>;
+    typeText: string;
+    setProduct: React.Dispatch<React.SetStateAction<ProductDB | NewProduct>>;
+    selected: boolean;
 }
 
-const SelectType = ({ productType, setProductType }: Props) => {
-    const [localValue, setLocalValue] = useState('Book');
+const SelectType = ({ typeText, setTypeText, setProduct, selected }: Props) => {
+    const { t } = useTranslation();
 
     const handleChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
-        setLocalValue(value);
-        const product = productTypes.find((p) => p.type === value);
-        if (product) {
-            console.log(product);
-            setProductType(product);
+
+        setTypeText(value);
+        const productType = productTypes.find((p) => p.type === value);
+        if (productType) {
+            setProduct((prev) => ({
+                ...prev,
+                type: productType.type,
+            }));
         }
     };
 
     return (
         <FormControl fullWidth>
-            <InputLabel>Product type</InputLabel>
+            <InputLabel>{t('create.type')}</InputLabel>
             <Select
                 fullWidth
                 label='Product type'
-                value={localValue}
-                displayEmpty
+                value={typeText}
                 onChange={handleChange}
-                //  sx={{
-                //      '& legend': { display: 'none' },
-                //      '& fieldset': { top: 0 },
-                //  }}
+                readOnly={selected}
             >
                 {productTypes.map((el) => {
                     return (
                         <MenuItem value={el.type} key={el.type}>
-                            {el.name}
+                            {t(`product.${el.type}`)}
                         </MenuItem>
                     );
                 })}

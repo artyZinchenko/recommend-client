@@ -1,8 +1,9 @@
-import { styled, alpha, useTheme } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, InputBase, useMediaQuery } from '@mui/material';
+import { InputBase } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SearchBox = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -27,7 +28,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
@@ -56,13 +56,10 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
-const SearchButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.background.default,
-}));
-
 const Search = () => {
     const [text, setText] = useState('');
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const keyPress = (
         e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,7 +76,7 @@ const Search = () => {
                 <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-                placeholder='Search…'
+                placeholder={t('search.search')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => keyPress(e)}
