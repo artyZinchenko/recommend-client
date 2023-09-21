@@ -6,7 +6,7 @@ To sign in as an admin please use: admin@email.com \ secret123
 
 ## Issues 
 This project uses Twitter and Facebook Auth Provided by Firebase. Twitter Auth flow works fine but there are issues with Facebook. 
-Since the start of 2022 "Meta for Developers" has required users to provide information about their businesses to use  auth features in deployment. As soon as this project is registered as a legal business, I will be able to provide this info to Meta and they will enable production use of auth features. Currently, Recommend's Facebook sign-in functions operate well but are restricted to dev mode use. The restriction is such that you can only sign in with accounts that are registered on the Meta Dev Platform and subscribed to this project. Sign-in flow and functions provided in the project are correct. The only thing missing are legal business documents. 
+Since the start of 2023 "Meta for Developers" has required users to provide information about their businesses to use  auth features in deployment. As soon as this project is registered as a legal business, I will be able to provide this info to Meta and they will enable production use of auth features. Currently, Recommend's Facebook sign-in functions operate well but are restricted to dev mode use. The restriction is such that you can only sign in with accounts that are registered on the Meta Dev Platform and subscribed to this project. Sign-in flow and functions provided in the project are correct. The only thing missing are legal business documents. 
 
 ### `npm start`
 
